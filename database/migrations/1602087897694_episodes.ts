@@ -11,8 +11,7 @@ export default class Episodes extends BaseSchema {
       table
         .foreign("season_id")
         .references("id")
-        .inTable("seasons")
-        .onDelete("CASCADE");
+        .inTable("seasons");
 
       table.string("name", 100).notNullable();
       table.string("description", 100).notNullable();

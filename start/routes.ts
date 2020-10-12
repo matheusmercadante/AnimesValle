@@ -49,10 +49,11 @@ Route.get("/assistir/:catalog_url/:season_url/:ep_url?", "PagesController.episod
 Route.any("/search", "PagesController.search").as(
   "catalog.search"
 );
-Route.post("/upload", "UploadsController.upload").as("upload");
+Route.post("/upload/:catalog_name?/file", "UploadsController.upload").as("upload");
 Route.post("/upload-update/:name?/file", "UploadsController.uploadUpdate").as("uploadUpdate");
-Route.post("/upload-video", "UploadsController.uploadVideo").as("uploadVideo");
-Route.post("/upload-video-update/:name?/file", "UploadsController.uploadVideoUpdate").as("uploadVideoUpdate");
+
+Route.post("/upload-video/:catalog_name?/file", "UploadsController.uploadVideo").as("uploadVideo");
+Route.post("/upload-video-update/:directory?/:name?/file", "UploadsController.uploadVideoUpdate").as("uploadVideoUpdate");
 
 Route.group(() => {
   Route.resource("dashboard", "DashboardsController");
@@ -67,12 +68,15 @@ Route.group(() => {
     "season.edit"
   );
 
-  Route.resource("episode", "EpisodesController").except(["create", "edit"]);
+  Route.resource("episode", "EpisodesController").except(["create", "edit", 'store']);
   Route.get("/episode/create/:id?", "EpisodesController.create").as(
     "episode.create"
   );
   Route.get("/episode/:season_id?/:id?/edit", "EpisodesController.edit").as(
     "episode.edit"
+  );
+  Route.post("/episode/:catalog_name?/file", "EpisodesController.store").as(
+    "episode.store"
   );
 
   Route.resource("genre", "GenresController");

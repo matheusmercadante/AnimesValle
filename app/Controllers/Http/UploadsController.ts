@@ -91,7 +91,7 @@ export default class UploadsController {
     }
   }
 
-  public async uploadVideo({ request, response }: HttpContextContract) {
+  public async uploadVideo({ request, response, params }: HttpContextContract) {
     try {
       const storage = new Storage({
         keyFilename: `${Application.publicPath(
@@ -106,13 +106,13 @@ export default class UploadsController {
 
       await request.multipart
         .onFile("episode_video", {}, async (file) => {
-          // console.log(file.clientName);
+          const fileNameStr = file.filename.substring(0, (file.filename.length - 4));
+          // console.log(fileNameStr);
 
           const fileNameYear = `${new Date().getFullYear()}`;
           const fileNameMouth = `${new Date().getMonth()}`;
           const fileNameDay = `${new Date().getDay()}`;
           const fileNameHours = `${new Date().getHours()}`;
-          const fileNameMinute = `${new Date().getMinutes()}`;
 
           const fileType = file.filename.substr(file.filename.length - 3);
           const fileName = `${
@@ -120,12 +120,14 @@ export default class UploadsController {
             fileNameMouth +
             fileNameDay +
             fileNameHours +
-            fileNameMinute
+            fileNameStr
           }.${fileType}`;
+
+          const fileNameFinal = `${params.catalog_name}/` + fileName;
 
           // const fileName = `${Date.now()}.${file.subtype}`;
 
-          const onlyPieceBucketFile = onlyPieceBucket.file(`${fileName}`);
+          const onlyPieceBucketFile = onlyPieceBucket.file(`${fileNameFinal}`);
 
           file.pipe(
             onlyPieceBucketFile.createWriteStream({
@@ -160,15 +162,18 @@ export default class UploadsController {
       await request.multipart
         .onFile("episode_video", {}, async (file) => {
           const fileName = params.name;
+          const directory = params.directory
 
-          const onlyPieceBucketFile = onlyPieceBucket.file(`${fileName}`);
+          const fileNameFinal = `${ directory + '/' + fileName }`;
+
+          const onlyPieceBucketFile = onlyPieceBucket.file(`${fileNameFinal}`);
 
           file.pipe(
             onlyPieceBucketFile.createWriteStream({
               metadata: {
                 contentType: file.headers["content-type"],
               },
-            })
+            }),
           );
         })
         .process();

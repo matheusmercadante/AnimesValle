@@ -76,16 +76,16 @@ export default class PagesController {
   }
 
   public async episode({ params, response, view }: HttpContextContract) {
-    const epSearch = await Catalog.query().preload('seasons', (query) => {
+    const catalog = await Catalog.query().preload('seasons', (query) => {
       query.preload('episodes', (query) => {
         query.where('ep_url', params.ep_url).first();
       }).where('url', params.season_url).first();
     }).where('url', params.catalog_url).first();
 
-    const ep = epSearch?.seasons[0].episodes[0];
+    const ep = catalog?.seasons[0].episodes[0];
 
     if (ep) {
-      return view.render("pages/episode", { ep });
+      return view.render("pages/episode", { ep, catalog });
     } else {
       return response.redirect().toRoute("home");
     }

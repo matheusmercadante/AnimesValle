@@ -14,7 +14,7 @@
     <!-- end main title -->
 
      <!-- form_image -->
-    <form style="display: none; visibility: hidden" action="{{ route('uploadVideoUpdate', { name: episode.episode_video }) }}" method="POST" enctype="multipart/form-data" id="formCloud">
+    <form style="display: none; visibility: hidden" action="{{ route('uploadVideoUpdate', { directory: catalog.url, name: episode.episode_video }) }}" method="POST" enctype="multipart/form-data" id="formCloud">
       <input data-name="#gallery1" name="episode_video" id="form__gallery-upload" class="form__gallery-upload" type="file">
     </form>
     <!-- end form_image -->

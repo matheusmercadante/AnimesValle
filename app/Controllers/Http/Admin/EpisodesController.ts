@@ -4,15 +4,19 @@ import Application from "@ioc:Adonis/Core/Application";
 
 import Episode from "App/Models/Episode";
 import Season from "App/Models/Season";
+import Catalog from "App/Models/Catalog";
 
 export default class EpisodesController {
   public async create({ params, view }: HttpContextContract) {
-    const season = await Season.findOrFail(params.id);
+    const catalog = await Catalog.query().preload('seasons', (query) => {
+      query.where('id', params.id).first();
+    }).first();
+    const season = catalog?.seasons[0];
 
-    return view.render("admin/episode/create", { season });
+    return view.render("admin/episode/create", { season, catalog });
   }
 
-  public async store({ request, response, session }: HttpContextContract) {
+  public async store({ request, response, session, params }: HttpContextContract) {
     try {
       const data = request.all();
 
@@ -20,15 +24,16 @@ export default class EpisodesController {
       const fileNameMouth = `${new Date().getMonth()}`;
       const fileNameDay = `${new Date().getDay()}`;
       const fileNameHours = `${new Date().getHours()}`;
-      const fileNameMinute = `${new Date().getMinutes()}`;
 
       const fileName = `${
         fileNameYear +
         fileNameMouth +
         fileNameDay +
         fileNameHours +
-        fileNameMinute
+        data.ep_url
       }.${data.type_video}`;
+
+      // `${params.catalog_name}/` +
 
       const save = await Episode.create({
         season_id: data.season_id,
@@ -56,16 +61,19 @@ export default class EpisodesController {
   }
 
   public async edit({ params, view }: HttpContextContract) {
-    const season = await Season.query().preload('episodes', (query) => {
-      query.where('id', params.id).first();
-    }).where('id', params.season_id).first();
+    const catalog = await Catalog.query().preload('seasons', (query) => {
+      query.preload('episodes', (query) => {
+        query.where('id', params.id).first();
+      }).where('id', params.season_id).first();
+    }).first();
 
+    const season = catalog?.seasons[0];
     const episode = season?.episodes[0];
 
-    return view.render("admin/episode/edit", { episode, season });
+    return view.render("admin/episode/edit", { episode, season, catalog });
   }
 
-  public async update({ params, request, response, session }: HttpContextContract) {
+  public async update({ params, request, response }: HttpContextContract) {
     try {
       const episode = await Episode.findOrFail(params.id);
       const data = request.all();

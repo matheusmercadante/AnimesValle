@@ -14,14 +14,14 @@
     <!-- end main title -->
 
      <!-- form_image -->
-    <form style="display: none; visibility: hidden" action="{{ route('uploadVideo') }}" method="POST" enctype="multipart/form-data" id="formCloud">
+    <form style="display: none; visibility: hidden" action="{{ route('uploadVideo', { catalog_name: catalog.url }) }}" method="POST" enctype="multipart/form-data" id="formCloud">
       <input data-name="#gallery1" name="episode_video" id="form__gallery-upload" class="form__gallery-upload" type="file">
     </form>
     <!-- end form_image -->
 
     <!-- form -->
     <div class="col-12">
-        <form action="{{ route('episode.store') }}" method="POST" class="form" id="formDB">
+        <form action="{{ route('episode.store', { catalog_name: catalog.url }) }}" method="POST" class="form" id="formDB">
         <div class="row">
           <div class="col-12 col-md-7 form__content">
             <div class="row">
@@ -108,7 +108,7 @@
         const dataDB = $('#formDB').serializeArray()
                                   .reduce(function(a, x) { a[x.name] = x.value; return a; }, {});
 
-        $.post('/panel/episode', dataDB, function() {
+        $.post('{{ route("episode.store", { catalog_name: catalog.url }) }}', dataDB, function() {
           $("#formCloud").submit();
         });
       });

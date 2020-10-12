@@ -13,7 +13,7 @@
             <video controls playsinline id="player">
               <!-- Video files -->
               {{--  <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576">  --}}
-              <source src="https://storage.googleapis.com/onlypiece-eps/{{ ep.episode_video }}" type="video/mp4" size="720">
+              <source src="https://storage.googleapis.com/onlypiece-eps/{{ catalog.url }}/{{ ep.episode_video }}" type="video/mp4" size="720">
 
               <!-- Fallback for browsers that don't support the <video> element -->
               {{--  <a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" download>Download</a>  --}}
