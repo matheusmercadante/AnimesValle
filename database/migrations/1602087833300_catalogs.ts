@@ -7,8 +7,8 @@ export default class Catalogs extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments("id");
 
-      table.text("name", 'mediumtext').notNullable();
-      table.text("description", 'mediumtext').notNullable();
+      table.text("name", 'mediumText').notNullable();
+      table.text("description", 'mediumText').notNullable();
       table.string("release_year", 4).notNullable();
       table.string("quality", 2).notNullable();
       table.string("author", 40).notNullable();
@@ -18,7 +18,7 @@ export default class Catalogs extends BaseSchema {
       table.string("published", 1).notNullable();
       table.string("qtd_seasons").notNullable();
 
-      table.text("url", 'mediumtext').notNullable();
+      table.text("url", 'mediumText').notNullable();
       table.string("meta_title", 100).notNullable();
 
       table.timestamps(true);

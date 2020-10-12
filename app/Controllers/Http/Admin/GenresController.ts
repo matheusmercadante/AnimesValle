@@ -24,10 +24,10 @@ export default class GenresController {
       });
 
       if (save) {
-        session.flash("sucess", "Gênero criado com Sucesso :)");
+        session.flash("sucess", "Gênero criado com Sucesso");
         return response.redirect().toRoute("genre.index");
       } else {
-        session.flash("errors", "Aconteceu algum erro ao criar o gênero :(");
+        session.flash("errors", "Aconteceu algum erro ao criar o gênero");
         return response.redirect().toRoute("genre.index");
       }
     } catch (error) {

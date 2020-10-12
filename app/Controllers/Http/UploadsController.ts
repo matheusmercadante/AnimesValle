@@ -58,7 +58,7 @@ export default class UploadsController {
     }
   }
 
-  public async uploadUpdate({ request, response, params }: HttpContextContract) {
+  public async uploadUpdate({ request, response, params, session }: HttpContextContract) {
     try {
       const storage = new Storage({
         keyFilename: `${Application.publicPath(
@@ -82,6 +82,8 @@ export default class UploadsController {
               },
             })
           );
+
+          session.flash("sucess", "Catalogo criado com Sucesso junto com a Thumb!");
         })
         .process();
 
@@ -91,7 +93,7 @@ export default class UploadsController {
     }
   }
 
-  public async uploadVideo({ request, response, params }: HttpContextContract) {
+  public async uploadVideo({ request, response, params, session }: HttpContextContract) {
     try {
       const storage = new Storage({
         keyFilename: `${Application.publicPath(
@@ -136,6 +138,8 @@ export default class UploadsController {
               },
             })
           );
+
+          session.flash("sucess", "Ep add com Sucesso!");
         })
         // .field((name, value) => {
         //   console.log(name, value);

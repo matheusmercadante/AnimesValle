@@ -183,8 +183,13 @@
 
         dataDB.genres = genre;
 
-        $.post('/panel/catalog/', dataDB, function() {
-          $("#formCloud").submit();
+        $.ajax({
+          method: 'post',
+          url: '{{ route("catalog.store") }}',
+          data: dataDB,
+          success: function() {
+            $("#formCloud").submit();
+          },
         });
       });
     })

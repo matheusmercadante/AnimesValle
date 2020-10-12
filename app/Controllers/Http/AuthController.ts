@@ -3,7 +3,7 @@ import { schema, rules } from "@ioc:Adonis/Core/Validator";
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 
 export default class AuthController {
-  public async register({ request, auth, response }: HttpContextContract) {
+  public async register({ request, auth, response, session }: HttpContextContract) {
     /**
      * Validate user details
      */
@@ -28,23 +28,18 @@ export default class AuthController {
     await user.save();
 
     await auth.login(user);
+    session.flash("sucess", "Seja bem vindo(a) ao Anime Valle <3 :)");
     response.redirect().toRoute("home");
   }
 
-  public async login({ auth, request, response }: HttpContextContract) {
+  public async login({ auth, request, response, session }: HttpContextContract) {
     const email = request.input("email");
     const password = request.input("password");
 
     await auth.attempt(email, password);
+
+    session.flash("sucess", "Logado com Sucesso, divirta-se :)");
     response.redirect().toRoute("perfil");
-  }
-
-  public async loginAdmin({ auth, request, response }: HttpContextContract) {
-    const email = request.input("email");
-    const password = request.input("password");
-
-    await auth.attempt(email, password);
-    response.redirect().toRoute("dashboard.index");
   }
 
   public async logout({ auth, response }: HttpContextContract) {

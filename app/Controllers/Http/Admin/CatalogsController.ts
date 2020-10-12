@@ -19,7 +19,7 @@ export default class CatalogsController {
     return view.render("admin/catalog/create", { genres });
   }
 
-  public async store({ request, response }: HttpContextContract) {
+  public async store({ request, response, session }: HttpContextContract) {
     try {
       const { genres, ...data } = request.all();
 
@@ -57,6 +57,7 @@ export default class CatalogsController {
       if (save) {
         return response.status(200);
       } else {
+        session.flash("errors", "Aconteceu algum erro ao criar o catalogo, tente novamente..");
         return response.status(500);
       }
     } catch (error) {
@@ -117,9 +118,13 @@ export default class CatalogsController {
       });
 
       const catalog = await Catalog.findOrFail(params.id);
+      const thumb = await storage.bucket("onlypiece-thumbs").file(catalog.main_image);
 
+      // if (thumb.name == catalog.main_image) {
+      //   await thumb.delete();
+      // }
       if (catalog) {
-        await storage.bucket("onlypiece-thumbs").file(catalog.main_image).delete();
+        await thumb.delete();
         await catalog.delete();
       }
 
