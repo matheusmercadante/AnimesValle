@@ -3,14 +3,16 @@ import { Storage } from "@google-cloud/storage";
 import Application from "@ioc:Adonis/Core/Application";
 
 import Episode from "App/Models/Episode";
-import Season from "App/Models/Season";
 import Catalog from "App/Models/Catalog";
 
 export default class EpisodesController {
   public async create({ params, view }: HttpContextContract) {
     const catalog = await Catalog.query().preload('seasons', (query) => {
       query.where('id', params.id).first();
+    }).whereHas('seasons', (query) => {
+      query.where('id', params.id);
     }).first();
+
     const season = catalog?.seasons[0];
 
     return view.render("admin/episode/create", { season, catalog });
