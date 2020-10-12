@@ -1,0 +1,138 @@
+@layout('layouts/admin/admin-layout')
+
+@set('title', 'Only Piece | Editar Temporada')
+
+@section('content')
+<div class="container-fluid">
+  <div class="row">
+    <!-- main title -->
+    <div class="col-12">
+      <div class="main__title">
+        <h2>Editar temporada</h2>
+      </div>
+    </div>
+    <!-- end main title -->
+
+     <!-- form_image -->
+     <form style="display: none; visibility: hidden" action="{{ route('uploadUpdate', { name: season.main_image }) }}" method="POST" enctype="multipart/form-data" id="formCloud">
+      <input name="main_image" id="form__img-upload" type="file" accept=".png, .jpg, .jpeg">
+    </form>
+    <!-- end form_image -->
+
+    <!-- form -->
+    <div class="col-12">
+        <form action="{{ route('season.update', { id: season.id }) }}?_method=PUT"  method="POST" class="form" id="formDB">
+        <div class="row">
+          <div class="col-12 col-md-7 form__content">
+            <div>
+              <div class="row">
+                <div class="col-12 col-sm-6 col-md-12">
+                  <div class="form__img">
+                    <label for="form__img-upload">Upload cover (1270 x 720)</label>
+                    @if(season)
+                    <img id="form__img" src="https://storage.googleapis.com/onlypiece-thumbs/{{ season.main_image }}" alt="">
+                    @else
+                    <img id="form__img" src="#" alt=" ">
+                    @endif
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-sm-6 col-lg-8">
+                <input id="name" name="name" value="{{ season ? season.name : "" }}" type="text" class="form__input" placeholder="Nome da temporada">
+              </div>
+
+              <div class="col-12 col-sm-6 col-lg-4">
+                <input id="url" name="url" value="{{ season ? season.url : "" }}" type="text" class="form__input" placeholder="Url">
+              </div>
+
+              <div class="col-12 col-sm-6 col-lg-4">
+                <select form="formDB" name="catalog_id" class="js-example-basic-single" id="quality">
+                  @if(season)
+                    <option value="{{ catalog.id }}">{{ catalog.name }}</option>
+                  @else
+                    @if(catalog)
+                      <option value="{{ catalog.id }}">{{ catalog.name }}</option>
+                    @else
+                      @each(item in catalogs)
+                      <option value="{{ item.id }}">{{ item.name }}</option>
+                      @endeach
+                    @endif
+                  @endif
+                </select>
+              </div>
+
+              <div class="col-12 col-sm-6 col-lg-4">
+                <input name="qtd_episodes" value="{{ season ? season.qtd_episodes : "" }}" type="text" class="form__input" placeholder="Quantidade de Eps">
+              </div>
+
+              <div class="col-12 col-sm-6 col-lg-4">
+                <select form="formDB" name="type_image" class="js-example-basic-single" id="type_image">
+                  @if(season)
+                    @if(season.type_image === "jpg")
+                      <option value="jpg">JPG</option>
+                      <option value="png">PNG</option>
+                    @else
+                      <option value="png">PNG</option>
+                      <option value="jpg">JPG</option>
+                    @endif
+                  @else
+                    <option value=""></option>
+                    <option value="jpg">JPG</option>
+                    <option value="png">PNG</option>
+                  @endif
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <ul class="form__radio">
+              <li>
+                <span>Item type:</span>
+              </li>
+              <li>
+                <input name="published" value="1" id="type1" type="radio" checked="">
+                <label for="type1">Publicar</label>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12">
+                <button id="submitBtn" type="button" class="form__btn">criar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- end form -->
+  </div>
+</div>
+@endsection
+
+@section('js')
+<script>
+  $(document).ready(function() {
+    $("#submitBtn").click(function(e) {
+      e.preventDefault();
+      // const dataDB = $("#formDB").serialize();
+      const dataDB = $('#formDB').serializeArray()
+                                .reduce(function(a, x) { a[x.name] = x.value; return a; }, {});
+
+      $.ajax({
+        method: 'PUT',
+        url: '{{ route("season.update", { id: season.id }) }}',
+        data: dataDB,
+        success: function() {
+          $("#formCloud").submit();
+        },
+      });
+    });
+  })
+</script>
+@endsection

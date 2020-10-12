@@ -1,0 +1,164 @@
+@layout('layouts/admin/admin-layout')
+
+@set('title', 'Only Piece | Filmes e Animes')
+
+@section('content')
+<div class="container-fluid">
+  <div class="row">
+    <!-- main title -->
+    <div class="col-12">
+      <div class="main__title">
+        <h2>Catalogo</h2>
+
+        <span class="main__title-stat">14,452 Total</span>
+
+        <div class="main__title-wrap">
+          <!-- filter sort -->
+          <div class="filter" id="filter__sort">
+            <span class="filter__item-label">Sort by:</span>
+
+            <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-sort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <input type="button" value="Date created">
+              <span></span>
+            </div>
+
+            <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-sort">
+              <li>Date created</li>
+              <li>Rating</li>
+              <li>Views</li>
+            </ul>
+          </div>
+          <!-- end filter sort -->
+
+          <!-- search -->
+          <form action="#" class="main__title-form">
+            <input type="text" placeholder="Find movie / tv series..">
+            <button type="button">
+              <i class="icon ion-ios-search"></i>
+            </button>
+          </form>
+          <!-- end search -->
+        </div>
+      </div>
+    </div>
+    <!-- end main title -->
+
+    @if(catalog != {})
+      <!-- users -->
+      <div class="col-12">
+        <div class="main__table-wrap">
+          <table class="main__table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>TÍTULO</th>
+                <th>RATING</th>
+                <th>CATEGORIA</th>
+                <th>VIEWS</th>
+                <th>STATUS</th>
+                <th>DATA DE CRIAÇÃO</th>
+                <th>AÇÕES</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @each(item in catalog)
+                <tr>
+                  <td>
+                    <div class="main__table-text">{{ item.id }}</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text">{{ item.name }}</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text main__table-text--rate"><i class="icon ion-ios-star"></i> 7.9</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text">Movie</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text">1392</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text main__table-text--green">{{ item.published == "1" ? "Visivel" : "Escondido"}}</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text">{{ item.created_at }}</div>
+                  </td>
+                  <td>
+                    <div class="main__table-btns">
+                      <a href="#modal-status" class="main__table-btn main__table-btn--banned open-modal">
+                        <i class="icon ion-ios-lock"></i>
+                      </a>
+                      <a href="{{ route('season.show', { id: item.id }) }}" class="main__table-btn main__table-btn--view">
+                        <i class="icon ion-ios-eye"></i>
+                      </a>
+                      <a href="{{ route('catalog.edit', { id: item.id }) }}" class="main__table-btn main__table-btn--edit">
+                        <i class="icon ion-ios-create"></i>
+                      </a>
+                      <form id="formDelete" action="{{ route('catalog.destroy', { id: item.id }) }}?_method=DELETE" method="POST">
+                        <a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
+                          <i class="icon ion-ios-trash"></i>
+                        </a>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              @endeach
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- end users -->
+
+      <!-- paginator -->
+      <div class="col-12">
+        <div class="paginator-wrap">
+
+          <span>10 de {{ catalog.getMeta().total }}</span>
+
+          <ul class="paginator">
+            <li class="paginator__item paginator__item--prev">
+              @if(catalog.getMeta().previous_page_url === null)
+                <a href=""><i class="icon ion-ios-arrow-back"></i></a>
+              @else
+                <a href="{{ route('catalog.index') }}{{ catalog.getMeta().previous_page_url }}"><i class="icon ion-ios-arrow-back"></i></a>
+              @endif
+            </li>
+            @each(anchor in catalog.getUrlsForRange(1, catalog.lastPage))
+              <li class="paginator__item paginator__item--active">
+                <a href="{{ route('catalog.index') }}{{ anchor.url }}">
+                  {{ anchor.page }}
+                </a>
+              </li>
+            @endeach
+            <li class="paginator__item paginator__item--next">
+              @if(catalog.getMeta().next_page_url === null)
+                <a href=""><i class="icon ion-ios-arrow-forward"></i></a>
+              @else
+                <a href="{{ route('catalog.index') }}{{ catalog.getMeta().next_page_url }}"><i class="icon ion-ios-arrow-forward"></i></a>
+              @endif
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- end paginator -->
+
+      @component('components/modals/modal_delete', { modal_title: 'Item delete'})
+        @slot('body')
+          Você tem certeza que quer deletar esse item?
+        @endslot
+
+        @slot('actions')
+          <button form="formDelete" class="modal__btn modal__btn--apply" type="submit">Deletar</button>
+          <button class="modal__btn modal__btn--dismiss" type="submit">Fechar</button>
+        @endslot
+      @endcomponent
+    @else
+      <div class="col-12">
+        <a href="{{ route('catalog.create') }}" class="mx-auto main__title-link">add item</a>
+      </div>
+    @endif
+  </div>
+</div>
+@endsection

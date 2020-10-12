@@ -1,0 +1,303 @@
+@layout('layouts/page-layout')
+
+@set('title', catalog.meta_title)
+
+@section('content')
+<!-- details -->
+<section class="section section--details section--bg" data-bg="assets/img/section/details.jpg">
+  <!-- details content -->
+  <div class="container">
+    <div class="row">
+      <!-- title -->
+      <div class="col-12">
+        <h1 class="section__title">{{ catalog.name }}</h1>
+      </div>
+      <!-- end title -->
+
+      <!-- content -->
+      <div class="col-12 col-lg-6">
+        <div class="card card--details">
+          <div class="row">
+            <!-- card cover -->
+            <div class="col-12 col-sm-5 col-lg-6 col-xl-5">
+              <div class="card__cover">
+                <img src="https://storage.googleapis.com/onlypiece-thumbs/{{ catalog.main_image }}" alt="">
+                <span class="card__rate card__rate--green">8.4</span>
+              </div>
+            </div>
+            <!-- end card cover -->
+
+            <!-- card content -->
+            <div class="col-12 col-sm-7 col-lg-6 col-xl-7">
+              <div class="card__content">
+                <ul class="card__meta">
+                  <li>
+                    <span>Autor:</span>
+                    {{ catalog.author }}
+                  </li>
+                  {{--  <li>
+                    <span>Cast:</span>
+                    <a href="#">Brian Cranston</a>
+                    <a href="#">Jesse Plemons</a>
+                    <a href="#">Matt Jones</a>
+                    <a href="#">Jonathan Banks</a>,
+                    <a href="#">Charles Baker</a>
+                    <a href="#">Tess Harper</a>
+                  </li>  --}}
+                  <li>
+                    <span>Gêneros:</span>
+                    @each(genre in catalog.genres)
+                      <a href="#">{{ genre.name }}</a>
+                    @endeach
+                  </li>
+                  <li><span>Ano de lançamento:</span> {{ catalog.release_year }}</li>
+                  <li><span>Tempo de cada eps:</span> 20 min</li>
+                  <li>
+                    <span>País:</span>
+                    <a href="#">{{ catalog.country }}</a>
+                  </li>
+                </ul>
+                <div class="card__description">
+                  {{ catalog.description }}
+                </div>
+              </div>
+            </div>
+            <!-- end card content -->
+          </div>
+        </div>
+      </div>
+      <!-- end content -->
+
+      <!-- player -->
+      <div class="col-12 col-lg-6">
+        <video controls crossorigin playsinline poster="https://storage.googleapis.com/onlypiece-thumbs/{{ catalog.main_image }}" id="player">
+          <!-- Video files -->
+          {{--  <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576">  --}}
+          <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4" type="video/mp4" size="720">
+
+          <!-- Caption files -->
+          <track kind="captions" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
+              default>
+          <track kind="captions" label="Français" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
+
+          <!-- Fallback for browsers that don't support the <video> element -->
+          {{--  <a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" download>Download</a>  --}}
+        </video>
+      </div>
+      <!-- end player -->
+    </div>
+  </div>
+  <!-- end details content -->
+</section>
+<!-- end details -->
+
+<!-- content -->
+<section class="content">
+  <div class="content__head">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <!-- content title -->
+          <h2 class="content__title">Discover</h2>
+          <!-- end content title -->
+
+          <!-- content tabs nav -->
+          <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Episodios</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Reviews</a>
+            </li>
+
+
+          </ul>
+          <!-- end content tabs nav -->
+
+          <!-- content mobile tabs nav -->
+          <div class="content__mobile-tabs" id="content__mobile-tabs">
+            <div class="content__mobile-tabs-btn dropdown-toggle" role="navigation" id="mobile-tabs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <input type="button" value="Comments">
+              <span></span>
+            </div>
+
+            <div class="content__mobile-tabs-menu dropdown-menu" aria-labelledby="mobile-tabs">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" id="1-tab" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Episodios</a></li>
+
+                <li class="nav-item"><a class="nav-link" id="2-tab" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Reviews</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- end content mobile tabs nav -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-lg-8 col-xl-8">
+        <!-- content tabs -->
+        <div class="tab-content">
+
+          <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
+            <!-- project gallery -->
+            <div class="gallery">
+              <div class="row">
+                @each(season in catalog.seasons)
+                  <div class="col-12" id="season_option">
+                    <div place="row-eps-{{ season.id }}" place-icon="{{ season.id }}" class="header__search expand">
+                      <button style="width: 100%; height: 50px; text-align: left" class="header__search-input">
+                        {{ season.name }}
+                      </button>
+                      <button class="header__search-button" type="button">
+                        <i id="season-arrow-{{ season.id }}" class="icon ion-ios-arrow-down"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  @each(ep in season.episodes)
+                    <div style="display: none" class="col-12 col-sm-6 col-xl-4 mt-4" id="row-eps-{{ season.id }}">
+                      <div class="card">
+                        <div class="card__cover">
+                          <img src="https://storage.googleapis.com/onlypiece-thumbs/{{ season.main_image }}" alt="Image description" />
+                          <a href="{{ route('episode', { catalog_url: catalog.url, season_url: season.url, ep_url: ep.ep_url }) }}" class="card__play">
+                            <i class="icon ion-ios-play"></i>
+                          </a>
+                          <div class="card__content">
+                            <h3 class="card__title">{{ ep.name }}</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  @endeach
+                @endeach
+              </div>
+            </div>
+            <!-- end project gallery -->
+          </div>
+
+          <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab">
+            <div class="row">
+              <!-- reviews -->
+              <div class="col-12">
+                <div class="reviews">
+                  <ul class="reviews__list">
+                    <li class="reviews__item">
+                      <div class="reviews__autor">
+                        <img class="reviews__avatar" src="img/user.svg" alt="">
+                        <span class="reviews__name">Best Marvel movie in my opinion</span>
+                        <span class="reviews__time">24.08.2018, 17:53 by John Doe</span>
+
+                        <span class="reviews__rating reviews__rating--green">8.4</span>
+                      </div>
+                      <p class="reviews__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
+                    </li>
+
+                    <li class="reviews__item">
+                      <div class="reviews__autor">
+                        <img class="reviews__avatar" src="img/user.svg" alt="">
+                        <span class="reviews__name">Best Marvel movie in my opinion</span>
+                        <span class="reviews__time">24.08.2018, 17:53 by John Doe</span>
+
+                        <span class="reviews__rating reviews__rating--green">9.0</span>
+                      </div>
+                      <p class="reviews__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
+                    </li>
+
+                    <li class="reviews__item">
+                      <div class="reviews__autor">
+                        <img class="reviews__avatar" src="img/user.svg" alt="">
+                        <span class="reviews__name">Best Marvel movie in my opinion</span>
+                        <span class="reviews__time">24.08.2018, 17:53 by John Doe</span>
+
+                        <span class="reviews__rating reviews__rating--red">5.5</span>
+                      </div>
+                      <p class="reviews__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
+                    </li>
+                  </ul>
+
+                  <form action="#" class="form">
+                    <input type="text" class="form__input" placeholder="Title">
+                    <textarea class="form__textarea" placeholder="Review"></textarea>
+                    <div class="form__slider">
+                      <div class="form__slider-rating" id="slider__rating"></div>
+                      <div class="form__slider-value" id="form__slider-value"></div>
+                    </div>
+                    <button type="button" class="form__btn">Send</button>
+                  </form>
+                </div>
+              </div>
+              <!-- end reviews -->
+            </div>
+          </div>
+        </div>
+        <!-- end content tabs -->
+      </div>
+
+      <!-- sidebar -->
+      <div class="col-12 col-lg-4 col-xl-4">
+        <div class="row">
+          <!-- section title -->
+          <div class="col-12">
+            <h2 class="section__title">Você pode gostar...</h2>
+          </div>
+          <!-- end section title -->
+
+          <!-- card -->
+          @each(item in catalogsRecomendations)
+            <div class="col-6 col-sm-4 col-lg-6">
+              <div class="card">
+                <div class="card__cover">
+                  <img src="https://storage.googleapis.com/onlypiece-thumbs/{{ item.main_image }}" alt="">
+                  <a href="{{ route('details', { url: item.url }) }}" class="card__play">
+                    <i class="icon ion-ios-play"></i>
+                  </a>
+                  <span class="card__rate card__rate--green">8.4</span>
+                </div>
+                <div class="card__content">
+                  <h3 class="card__title"><a href="#">{{ item.name }}</a></h3>
+                  <span class="card__category">
+                    @each(genre in item.genres)
+                      <a href="">{{ genre.name }}</a>
+                    @endeach
+                  </span>
+                </div>
+              </div>
+            </div>
+          @endeach
+          <!-- end card -->
+        </div>
+      </div>
+      <!-- end sidebar -->
+    </div>
+  </div>
+</section>
+<!-- end content -->
+@endsection
+
+@section('js')
+  <script>
+    $(document).ready(function() {
+    $('div.expand').on("click", function() {
+        const ele = "div#" + $(this).attr("place");
+        const icon = "i#season-arrow-" + $(this).attr("place-icon");
+        /* duration:
+           "fast" or 200 for FAST easing
+           "slow" or 600 milliseconds for SLOW easing
+        */
+        const duration = 200;
+
+        if ($(icon).hasClass('ion-ios-arrow-down')) {
+          $(icon).toggleClass('ion-ios-arrow-down ion-ios-arrow-up').fadeOut(duration);
+          $(ele).toggle(duration);
+        } else {
+          $(icon).toggleClass('ion-ios-arrow-up ion-ios-arrow-down').fadeOut(duration).fadeIn(duration)
+          $(ele).toggle(duration);
+        }
+      });
+    });
+  </script>
+@endsection

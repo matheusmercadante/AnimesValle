@@ -1,0 +1,28 @@
+@layout('layouts/episode/episode-layout')
+
+@set('title', ep.meta_title)
+
+@section('content')
+<div class="sign section--bg" data-bg="../../../assets/img/section/section.jpg">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="sign__content">
+          <!-- player -->
+          <div class="col-12 col-lg-8">
+            <video controls playsinline id="player">
+              <!-- Video files -->
+              {{--  <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576">  --}}
+              <source src="https://storage.googleapis.com/onlypiece-eps/{{ ep.episode_video }}" type="video/mp4" size="720">
+
+              <!-- Fallback for browsers that don't support the <video> element -->
+              {{--  <a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" download>Download</a>  --}}
+            </video>
+          </div>
+          <!-- end player -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+@endsection

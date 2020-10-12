@@ -1,0 +1,122 @@
+@layout('layouts/admin/admin-layout')
+
+@set('title', 'Only Piece | Adicionar Episódios')
+
+@section('content')
+<div class="container-fluid">
+  <div class="row">
+    <!-- main title -->
+    <div class="col-12">
+      <div class="main__title">
+        <h2>Editar episódio {{ episode.name }}</h2>
+      </div>
+    </div>
+    <!-- end main title -->
+
+     <!-- form_image -->
+    <form style="display: none; visibility: hidden" action="{{ route('uploadVideoUpdate', { name: episode.episode_video }) }}" method="POST" enctype="multipart/form-data" id="formCloud">
+      <input data-name="#gallery1" name="episode_video" id="form__gallery-upload" class="form__gallery-upload" type="file">
+    </form>
+    <!-- end form_image -->
+
+    <!-- form -->
+    <div class="col-12">
+        <form action="{{ route('episode.update', { id: episode.id }) }}?_method=PUT"  method="POST" class="form" id="formDB">
+        <div class="row">
+          <div class="col-12 col-md-7 form__content">
+            <div class="row">
+              <div class="col-12">
+                <input id="name" name="name" value="{{ episode ? episode.name : "" }}" type="text" class="form__input" placeholder="Nome">
+              </div>
+
+              <div class="col-12">
+                <textarea id="description" name="description" id="text" class="form__textarea" placeholder="Descrição">{{ episode ? episode.description : "" }}</textarea>
+              </div>
+
+              <div class="col-12 col-sm-6 col-lg-4">
+                <select form="formDB" name="season_id" class="js-example-basic-single" id="quality">
+                  @if(episode)
+                    <option value="{{ season.id }}">{{ season.name }}</option>
+                  @else
+                    @if(season)
+                      <option value="{{ season.id }}">{{ season.name }}</option>
+                    @else
+                      @each(item in seasons)
+                      <option value="{{ item.id }}">{{ item.name }}</option>
+                      @endeach
+                    @endif
+                  @endif
+                </select>
+              </div>
+
+              <div class="col-12 col-lg-4">
+                <input name="ep_url" value="{{ episode ? episode.ep_url : "" }}" type="text" class="form__input" placeholder="Url Página">
+              </div>
+
+              <div class="col-12 col-lg-4">
+                <input name="meta_title" value="{{ episode ? episode.meta_title : "" }}" type="text" class="form__input" placeholder="Título Página">
+              </div>
+
+              <div class="col-12 col-sm-6 col-lg-8">
+                <div class="form__gallery">
+                  <label id="gallery1" for="form__gallery-upload">{{ episode ? episode.episode_video : "Upload ep"}}</label>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-6 col-lg-4">
+                <select form="formDB" name="type_video" class="js-example-basic-single" id="type_image">
+                  @if(episode)
+                    @if(episode.type_video === "mp4")
+                      <option value="mp4">MP4</option>
+                      <option value="mkv">MKV</option>
+                    @else
+                      <option value="mkv">MKV</option>
+                      <option value="mp4">MP4</option>
+                    @endif
+                  @else
+                    <option value=""></option>
+                    <option value="mp4">MP4</option>
+                    <option value="mkv">MKV</option>
+                  @endif
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12">
+                <button id="submitBtn" type="button" class="form__btn">publicar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- end form -->
+  </div>
+</div>
+@endsection
+
+
+@section('js')
+  <script>
+    $(document).ready(function() {
+      $("#submitBtn").click(function(e) {
+        e.preventDefault();
+        // const dataDB = $("#formDB").serialize();
+        const dataDB = $('#formDB').serializeArray()
+                                  .reduce(function(a, x) { a[x.name] = x.value; return a; }, {});
+
+        $.ajax({
+          method: 'PUT',
+          url: '{{ route("episode.update", { id: episode.id }) }}',
+          data: dataDB,
+          success: function() {
+            $("#formCloud").submit();
+          },
+        });
+      });
+    })
+  </script>
+@endsection

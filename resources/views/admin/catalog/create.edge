@@ -1,0 +1,192 @@
+@layout('layouts/admin/admin-layout')
+
+@set('title', 'Only Piece | Adicionar Filmes e Animes')
+
+@section('content')
+<div class="container-fluid">
+  <div class="row">
+    <!-- main title -->
+    <div class="col-12">
+      <div class="main__title">
+        <h2>Add novo item</h2>
+      </div>
+    </div>
+    <!-- end main title -->
+
+    <!-- form_image -->
+    <form style="display: none; visibility: hidden" action="{{ route('upload') }}" method="POST" enctype="multipart/form-data" id="formCloud">
+      <input name="main_image" id="form__img-upload" type="file" accept=".png, .jpg">
+    </form>
+    <!-- end form_image -->
+
+    <!-- form -->
+    <div class="col-12">
+        <form action="{{ route('catalog.store') }}" method="POST" class="form" id="formDB" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-12 col-md-5 form__cover">
+            <div class="row">
+              <div class="col-12 col-sm-6 col-md-12">
+                <div class="form__img">
+                  <label for="form__img-upload">Upload cover (270 x 400)</label>
+                  @if(catalog)
+                  <img id="form__img" src="https://storage.googleapis.com/onlypiece-thumbs/{{ catalog.main_image }}" alt="">
+                  @else
+                  <img id="form__img" src="#" alt=" ">
+                  @endif
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 col-sm-6 col-md-12 w-100">
+                <select form="formDB" name="type_image" class="js-example-basic-single" id="type_image">
+                  @if(catalog)
+                    @if(catalog.type_image === "jpg")
+                      <option value="jpg">JPG</option>
+                      <option value="png">PNG</option>
+                    @else
+                      <option value="png">PNG</option>
+                      <option value="jpg">JPG</option>
+                    @endif
+                  @else
+                    <option value=""></option>
+                    <option value="jpg">JPG</option>
+                    <option value="png">PNG</option>
+                  @endif
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-7 form__content">
+            <div class="row">
+              <div class="col-12">
+                <input id="name" name="name" value="{{ catalog ? catalog.name : "" }}" type="text" class="form__input" placeholder="Nome">
+              </div>
+
+              <div class="col-12">
+                <textarea id="description" name="description" id="text" class="form__textarea" placeholder="Descrição">{{ catalog ? catalog.description : "" }}</textarea>
+              </div>
+
+              <div class="col-12 col-sm-6 col-lg-4">
+                <input name="release_year" value="{{ catalog ? catalog.release_year : "" }}" type="text" class="form__input" placeholder="Ano de lançamento">
+              </div>
+
+              <div class="col-12 col-sm-6 col-lg-4">
+                <input name="qtd_seasons" value="{{ catalog ? catalog.qtd_seasons : "" }}" type="text" class="form__input" placeholder="Temporadas">
+              </div>
+
+              <div class="col-12 col-sm-6 col-lg-4">
+                <select form="formDB" name="quality" class="js-example-basic-single" id="quality">
+                  @if(catalog)
+                    @if(catalog.quality === "fullHD")
+                      <option value="FullHD">FullHD</option>
+                      <option value="HD">HD</option>
+                    @else
+                      <option value="HD">HD</option>
+                      <option value="FullHD">FullHD</option>
+                    @endif
+                  @else
+                    <option value=""></option>
+                    <option value="FullHD">FullHD</option>
+                    <option value="HD">HD</option>
+                  @endif
+
+                </select>
+              </div>
+
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-12">
+                    <select name="genres[]" class="js-example-basic-multiple" id="genre" multiple>
+                      @if(catalog)
+                        @each(item in catalog.genres)
+                        <option value="{{ item.id }}">{{ item.name }}</option>
+                        @endeach
+                      @else
+                        @each(item in genres)
+                        <option value="{{ item.id }}">{{ item.name }}</option>
+                        @endeach
+                      @endif
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-6">
+                <input name="author" value="{{ catalog ? catalog.author : "" }}" type="text" class="form__input" placeholder="Autor">
+              </div>
+
+              <div class="col-12 col-lg-6">
+                <input name="country" value="{{ catalog ? catalog.country : "" }}" type="text" class="form__input" placeholder="País">
+              </div>
+
+              <div class="col-12 col-lg-6">
+                <input name="url" value="{{ catalog ? catalog.url : "" }}" type="text" class="form__input" placeholder="Url Página">
+              </div>
+
+              <div class="col-12 col-lg-6">
+                <input name="meta_title" value="{{ catalog ? catalog.meta_title : "" }}" type="text" class="form__input" placeholder="Título Página">
+              </div>
+
+              {{--  <div class="col-12">
+                <div class="form__gallery">
+                  <label id="gallery1" for="form__gallery-upload">Upload photos</label>
+                  <input data-name="#gallery1" id="form__gallery-upload" name="gallery" class="form__gallery-upload" type="file" accept=".png, .jpg, .jpeg" multiple>
+                </div>
+              </div>  --}}
+            </div>
+          </div>
+
+          <div class="col-12">
+            <ul class="form__radio">
+              <li>
+                <span>Item type:</span>
+              </li>
+              <li>
+                <input name="published" value="1" id="type1" type="radio" checked="">
+                <label for="type1">Publicar</label>
+              </li>
+              <li>
+                <input id="type2" type="radio">
+                <label for="type2">TV Series</label>
+              </li>
+            </ul>
+          </div>
+
+
+        </div>
+      </form>
+
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12">
+            <button id="submitBtn" type="submit" class="form__btn">publicar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end form -->
+  </div>
+</div>
+@endsection
+
+@section('js')
+  <script>
+    $(document).ready(function() {
+      $("#submitBtn").click(function(e) {
+        e.preventDefault();
+        // const dataDB = $("#formDB").serialize();
+        const dataDB = $('#formDB').serializeArray()
+                                  .reduce(function(a, x) { a[x.name] = x.value; return a; }, {});
+
+        const genre = $('#genre').val();
+
+        dataDB.genres = genre;
+
+        $.post('/panel/catalog/', dataDB, function() {
+          $("#formCloud").submit();
+        });
+      });
+    })
+  </script>
+@endsection

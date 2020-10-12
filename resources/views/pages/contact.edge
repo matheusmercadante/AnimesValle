@@ -1,0 +1,80 @@
+@layout('layouts/page-layout')
+
+@set('title', 'Only Piece | Contato')
+
+@section('content')
+<!-- page title -->
+<section class="section section--first section--bg" data-bg="assets/img/section/section.jpg">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="section__wrap">
+          <!-- section title -->
+          <h2 class="section__title">Contatos</h2>
+          <!-- end section title -->
+
+          <!-- breadcrumb -->
+          <ul class="breadcrumb">
+            <li class="breadcrumb__item"><a href="/">Home</a></li>
+            <li class="breadcrumb__item breadcrumb__item--active">Contatos</li>
+          </ul>
+          <!-- end breadcrumb -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end page title -->
+
+<!-- contacts -->
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-7 col-xl-8">
+        <div class="row">
+          <!-- section title -->
+          <div class="col-12">
+            <h2 class="section__title">Formulário</h2>
+          </div>
+          <!-- end section title -->
+
+          <div class="col-12">
+            <form action="#" class="form form--contacts">
+              <input type="text" class="form__input" placeholder="Nome">
+              <input type="text" class="form__input" placeholder="Email">
+              <input type="text" class="form__input" placeholder="Título">
+              <textarea id="text" name="text" class="form__textarea" placeholder="Escreva sua mensagem..."></textarea>
+              <button type="button" class="form__btn">Enviar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-5 col-xl-4">
+        <div class="row">
+          <!-- section title -->
+          <div class="col-12">
+            <h2 class="section__title">Info</h2>
+          </div>
+          <!-- end section title -->
+
+          <div class="col-12">
+            <p class="section__text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corporis dolor neque cum aliquam quidem eligendi dicta inventore quaerat perferendis aut.</p>
+
+            <ul class="contacts__list">
+              <li><a href="mailto:support@moviego.com">support@onlypiece.com.br</a></li>
+            </ul>
+            <ul class="contacts__social">
+              <li class="facebook"><a href="#"><i class="icon ion-logo-facebook"></i></a></li>
+              <li class="instagram"><a href="#"><i class="icon ion-logo-instagram"></i></a></li>
+              <li class="twitter"><a href="#"><i class="icon ion-logo-twitter"></i></a></li>
+              <li class="vk"><a href="#"><i class="icon ion-logo-vk"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end contacts -->
+@endsection

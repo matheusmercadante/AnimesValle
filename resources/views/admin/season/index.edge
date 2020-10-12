@@ -1,0 +1,222 @@
+@layout('layouts/admin/admin-layout')
+
+@set('title', 'Only Piece | Temporadas')
+
+@section('content')
+<div class="container-fluid">
+  <div class="row">
+    <!-- main title -->
+    <div class="col-12">
+      <div class="main__title">
+        <h2>Todas as temporadas de {{ catalog.name }}</h2>
+
+        <span class="main__title-stat">14,452 Total</span>
+
+        <div class="main__title-wrap">
+          {{--  <!-- filter sort -->
+          <div class="filter" id="filter__sort">
+            <span class="filter__item-label">Sort by:</span>
+
+            <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-sort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <input type="button" value="Date created">
+              <span></span>
+            </div>
+
+            <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-sort">
+              <li>Date created</li>
+              <li>Rating</li>
+              <li>Views</li>
+            </ul>
+          </div>
+          <!-- end filter sort -->  --}}
+
+          <!-- search -->
+          <form action="#" class="main__title-form">
+            <input type="text" placeholder="Find movie / tv series..">
+            <button type="button">
+              <i class="icon ion-ios-search"></i>
+            </button>
+          </form>
+          <!-- end search -->
+
+          <a href="{{ route('season.create', { id: catalog.id }) }}" class="ml-4 main__title-link">add temp</a>
+        </div>
+      </div>
+    </div>
+    <!-- end main title -->
+
+    @if(seasons != {})
+      <!-- users -->
+      <div class="col-12">
+        <div class="main__table-wrap">
+          <table class="main__table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>TÍTULO</th>
+                <th>RATING</th>
+                <th>CATEGORIA</th>
+                <th>VIEWS</th>
+                <th>STATUS</th>
+                <th>DATA DE CRIAÇÃO</th>
+                <th>AÇÕES</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @each(item in catalog.seasons)
+              <tr place="row-eps-{{ item.id }}" class="expand">
+                  <td>
+                    <div class="main__table-text">{{ item.id }}</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text">{{ item.name }}</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text main__table-text--rate"><i class="icon ion-ios-star"></i> 7.9</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text">Movie</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text">1392</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text main__table-text--green">{{ item.published == "1" ? "Visivel" : "Escondido"}}</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text">{{ item.created_at || "" }}</div>
+                  </td>
+                  <td>
+                    <div class="main__table-btns">
+                      <a href="#modal-status" class="main__table-btn main__table-btn--banned open-modal">
+                        <i class="icon ion-ios-lock"></i>
+                      </a>
+                      <a href="{{ route('episode.create', { id: item.id }) }}" class="main__table-btn main__table-btn--view">
+                        <i class="icon ion-ios-eye"></i>
+                      </a>
+                      <a href="{{ route('season.edit', { catalog_id: catalog.id, id: item.id }) }}" class="main__table-btn main__table-btn--edit">
+                        <i class="icon ion-ios-create"></i>
+                      </a>
+                      <form id="formDelete" action="{{ route('season.destroy', { id: item.id }) }}?_method=DELETE" method="POST">
+                        <a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
+                          <i class="icon ion-ios-trash"></i>
+                        </a>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+                @each(ep in item.episodes)
+                  <tr style="display: none;" id="row-eps-{{ item.id }}">
+                    <td>
+                      <div class="main__table-text"><i class="icon ion-ios-star"></i></div>
+                    </td>
+                    <td>
+                      <div class="main__table-text">{{ ep.name }}</div>
+                    </td>
+                    <td>
+                      <div class="main__table-text main__table-text--rate">7.9</div>
+                    </td>
+                    <td>
+                      <div class="main__table-text">Movie</div>
+                    </td>
+                    <td>
+                      <div class="main__table-text">1392</div>
+                    </td>
+                    <td>
+                      <div class="main__table-text main__table-text--green">{{ ep.published == "1" ? "Visivel" : "Escondido"}}</div>
+                    </td>
+                    <td>
+                      <div class="main__table-text">{{ ep.created_at || "" }}</div>
+                    </td>
+                    <td>
+                      <div class="main__table-btns">
+                        <a href="#modal-status" class="main__table-btn main__table-btn--banned open-modal">
+                          <i class="icon ion-ios-lock"></i>
+                        </a>
+                        <a href="{{ route('episode.edit', { season_id: item.id, id: ep.id }) }}" class="main__table-btn main__table-btn--edit">
+                          <i class="icon ion-ios-create"></i>
+                        </a>
+                        <form id="formDeleteEp" action="{{ route('episode.destroy', { id: ep.id }) }}?_method=DELETE" method="POST">
+                          <a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
+                            <i class="icon ion-ios-trash"></i>
+                          </a>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                @endeach
+              @endeach
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- end users -->
+
+      @component('components/modals/modal_delete', { modal_title: 'Item delete'})
+        @slot('body')
+          Você tem certeza que quer deletar esse item?
+        @endslot
+
+        @slot('actions')
+          <button form="formDelete" class="modal__btn modal__btn--apply" type="submit">Deletar</button>
+          <button class="modal__btn modal__btn--dismiss" type="submit">Fechar</button>
+        @endslot
+      @endcomponent
+
+      {{--  <!-- paginator -->
+      <div class="col-12">
+        <div class="paginator-wrap">
+
+          <span>10 de {{ seasons.getMeta().total }}</span>
+
+          <ul class="paginator">
+            <li class="paginator__item paginator__item--prev">
+              @if(seasons.getMeta().previous_page_url === null)
+                <a href=""><i class="icon ion-ios-arrow-back"></i></a>
+              @else
+                <a href="{{ route('genre.index') }}{{ seasons.getMeta().previous_page_url }}"><i class="icon ion-ios-arrow-back"></i></a>
+              @endif
+            </li>
+            @each(anchor in seasons.getUrlsForRange(1, seasons.lastPage))
+              <li class="paginator__item paginator__item--active">
+                <a href="{{ route('genre.index') }}{{ anchor.url }}">
+                  {{ anchor.page }}
+                </a>
+              </li>
+            @endeach
+            <li class="paginator__item paginator__item--next">
+              @if(seasons.getMeta().previous_page_url === null)
+                <a href=""><i class="icon ion-ios-arrow-forward"></i></a>
+              @else
+                <a href="{{ route('genre.index') }}{{ seasons.getMeta().next_page_url }}"><i class="icon ion-ios-arrow-forward"></i></a>
+              @endif
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- end paginator -->  --}}
+    @else
+      <div class="col-12">
+        <a href="{{ route('genre.create') }}" class="mx-auto main__title-link">add item</a>
+      </div>
+    @endif
+  </div>
+</div>
+@endsection
+
+@section('js')
+  <script>
+    $(document).ready(function() {
+    $('tr.expand').on("click", function() {
+        var ele = "tr#" + $(this).attr("place");
+        /* duration:
+           "fast" or 200 for FAST easing
+           "slow" or 600 milliseconds for SLOW easing
+        */
+        var duration = 200;
+        $(ele).toggle(duration);
+      });
+    });
+  </script>
+@endsection

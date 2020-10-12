@@ -1,0 +1,11 @@
+<!-- modal delete -->
+<div id="modal-delete" class="zoom-anim-dialog mfp-hide modal">
+  <h6 class="modal__title">{{ modal_title }}</h6>
+
+  <p class="modal__text">{{{ $slots.body() }}}</p>
+
+  <div class="modal__btns">
+    {{{ $slots.actions() }}}
+  </div>
+</div>
+<!-- end modal delete -->

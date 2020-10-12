@@ -1,0 +1,55 @@
+@layout('layouts/admin/admin-layout')
+
+@set('title', 'Only Piece | Adicionar Gêneros')
+
+@section('content')
+<div class="container-fluid">
+  <div class="row">
+    <!-- main title -->
+    <div class="col-12">
+      <div class="main__title">
+        <h2>Add novo item</h2>
+      </div>
+    </div>
+    <!-- end main title -->
+
+    <!-- form -->
+    <div class="col-12">
+        @if(genre)
+        <form action="{{ route('genre.update', { id: genre.id }) }}?_method=PUT"  method="POST" class="form" id="formDB">
+        @else
+        <form action="{{ route('genre.store') }}" method="POST" class="form" id="formDB">
+        @endif
+        <div class="row">
+          <div class="col-12 col-md-7 form__content">
+            <div class="row">
+              <div class="col-12">
+                <input id="name" name="name" value="{{ genre ? genre.name : "" }}" type="text" class="form__input" placeholder="Nome">
+              </div>
+
+              <div class="col-12">
+                <input name="url" value="{{ genre ? genre.url : "" }}" type="text" class="form__input" placeholder="Url Página">
+              </div>
+
+              <div class="col-12">
+                <input name="meta_title" value="{{ genre ? genre.meta_title : "" }}" type="text" class="form__input" placeholder="Título Página">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12">
+                <button id="submitBtn" type="submit" class="form__btn">criar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+
+    </div>
+    <!-- end form -->
+  </div>
+</div>
+@endsection

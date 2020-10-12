@@ -1,0 +1,300 @@
+@layout('layouts/page-layout')
+
+@set('title', 'Only Piece | Perfil!')
+
+@section('content')
+<!-- page title -->
+<section class="section section--first section--bg" data-bg="assets/img/section/section.jpg">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="section__wrap">
+          <!-- section title -->
+          <h2 class="section__title">Meu OnlyPiece Espaço</h2>
+          <!-- end section title -->
+
+          <!-- breadcrumb -->
+          <ul class="breadcrumb">
+            <li class="breadcrumb__item"><a href="/">Home</a></li>
+            <li class="breadcrumb__item breadcrumb__item--active">Perfil</li>
+          </ul>
+          <!-- end breadcrumb -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end page title -->
+
+<!-- content -->
+<div class="content">
+  <!-- profile -->
+  <div class="profile">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="profile__content">
+            <div class="profile__user">
+              <div class="profile__avatar">
+                <img src="assets/img/user.svg" alt="">
+              </div>
+              <div class="profile__meta">
+                <h3>{{ user.name }}</h3>
+                <span>OnlyPiece ID: {{ user.id }}</span>
+              </div>
+            </div>
+
+            <!-- content tabs nav -->
+            <ul class="nav nav-tabs content__tabs content__tabs--profile" id="content__tabs" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Perfil</a>
+              </li>
+
+              <li class="nav-item">
+                {{--  <a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Em Breve</a>  --}}
+                <a class="nav-link">Em Breve</a>
+              </li>
+            </ul>
+            <!-- end content tabs nav -->
+
+            <!-- content mobile tabs nav -->
+            <div class="content__mobile-tabs content__mobile-tabs--profile" id="content__mobile-tabs">
+              <div class="content__mobile-tabs-btn dropdown-toggle" role="navigation" id="mobile-tabs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <input type="button" value="Profile">
+                <span></span>
+              </div>
+
+              <div class="content__mobile-tabs-menu dropdown-menu" aria-labelledby="mobile-tabs">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" id="1-tab" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Profile</a>
+                  </li>
+
+                  <li class="nav-item">
+                    {{--  <a class="nav-link" id="2-tab" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Em Breve</a>  --}}
+                    <a class="nav-link">Em Breve</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- end content mobile tabs nav -->
+
+            <a href="{{ route('logout') }}" class="profile__logout">
+              <i class="icon ion-ios-log-out"></i>
+              <span>Sair</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end profile -->
+
+  <div class="container">
+    <!-- content tabs -->
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
+        <div class="row">
+          <!-- details form -->
+          <div class="col-12 col-lg-6">
+            <form action="#" class="profile__form">
+              <div class="row">
+                <div class="col-12">
+                  <h4 class="profile__title">Detalhes do Perfil</h4>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                  <div class="profile__group">
+                    <label class="profile__label" for="username">Username</label>
+                    <input id="username" type="text" name="username" class="profile__input" value="{{ user.username || "" }}" placeholder="{{ user.username || "Username"}}">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                  <div class="profile__group">
+                    <label class="profile__label" for="email">Email</label>
+                    <input id="email" type="text" name="email" class="profile__input" value="{{ user.email || "" }}" placeholder="{{ user.email || "Email" }}">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                  <div class="profile__group">
+                    <label class="profile__label" for="firstname">Primeiro Nome</label>
+                    <input id="firstname" type="text" name="first_name" class="profile__input" value="{{ user.first_name || "" }}" placeholder="{{ user.first_name || "Primeiro nome" }}">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                  <div class="profile__group">
+                    <label class="profile__label" for="lastname">Último Nome</label>
+                    <input id="lastname" type="text" name="last_name" class="profile__input" value="{{ user.last_name || "" }}" placeholder="{{ user.last_name || "Último nome" }}">
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <button disabled class="profile__btn" type="submit">Save</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- end details form -->
+
+          <!-- password form -->
+          <div class="col-12 col-lg-6">
+            <form action="#" class="profile__form">
+              <div class="row">
+                <div class="col-12">
+                  <h4 class="profile__title">Mudar a senha</h4>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                  <div class="profile__group">
+                    <label class="profile__label" for="oldpass">Senha Antiga</label>
+                    <input id="oldpass" type="password" name="old_pass" class="profile__input">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                  <div class="profile__group">
+                    <label class="profile__label" for="newpass">Nova Senha</label>
+                    <input id="newpass" type="password" name="new_pass" class="profile__input">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                  <div class="profile__group">
+                    <label class="profile__label" for="confirmpass">Confirmar Nova Senha</label>
+                    <input id="confirmpass" type="password" name="confirmpass" class="profile__input">
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <button disabled class="profile__btn" type="submit">Mudar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- end password form -->
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab">
+        <div class="row">
+          <!-- price -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="price price--profile">
+              <div class="price__item price__item--first"><span>Basic</span> <span>Free</span></div>
+              <div class="price__item"><span>7 days</span></div>
+              <div class="price__item"><span>720p Resolution</span></div>
+              <div class="price__item"><span>Limited Availability</span></div>
+              <div class="price__item"><span>Desktop Only</span></div>
+              <div class="price__item"><span>Limited Support</span></div>
+              <a href="#" class="price__btn">Choose Plan</a>
+            </div>
+          </div>
+          <!-- end price -->
+
+          <!-- price -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="price price--profile price--premium">
+              <div class="price__item price__item--first"><span>Premium</span> <span>$19.99</span></div>
+              <div class="price__item"><span>1 Month</span></div>
+              <div class="price__item"><span>Full HD</span></div>
+              <div class="price__item"><span>Lifetime Availability</span></div>
+              <div class="price__item"><span>TV & Desktop</span></div>
+              <div class="price__item"><span>24/7 Support</span></div>
+              <a href="#" class="price__btn">Choose Plan</a>
+            </div>
+          </div>
+          <!-- end price -->
+
+          <!-- price -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="price price--profile">
+              <div class="price__item price__item--first"><span>Cinematic</span> <span>$39.99</span></div>
+              <div class="price__item"><span>2 Months</span></div>
+              <div class="price__item"><span>Ultra HD</span></div>
+              <div class="price__item"><span>Lifetime Availability</span></div>
+              <div class="price__item"><span>Any Device</span></div>
+              <div class="price__item"><span>24/7 Support</span></div>
+              <a href="#" class="price__btn">Choose Plan</a>
+            </div>
+          </div>
+          <!-- end price -->
+        </div>
+      </div>
+    </div>
+    <!-- end content tabs -->
+  </div>
+</div>
+<!-- end content -->
+
+<!-- partners -->
+<section class="section section--grid section--border">
+  <div class="container">
+    <div class="row">
+      <!-- section title -->
+      <div class="col-12">
+        <h2 class="section__title section__title--no-margin">Nossos Parceiros</h2>
+      </div>
+      <!-- end section title -->
+
+      <!-- section text -->
+      <div class="col-12">
+        <p class="section__text section__text--last-with-margin">It is a long <b>established</b> fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using.</p>
+      </div>
+      <!-- end section text -->
+
+      <!-- partner -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="#" class="partner">
+          <img src="img/partners/themeforest-light-background.png" alt="" class="partner__img">
+        </a>
+      </div>
+      <!-- end partner -->
+
+      <!-- partner -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="#" class="partner">
+          <img src="img/partners/audiojungle-light-background.png" alt="" class="partner__img">
+        </a>
+      </div>
+      <!-- end partner -->
+
+      <!-- partner -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="#" class="partner">
+          <img src="img/partners/codecanyon-light-background.png" alt="" class="partner__img">
+        </a>
+      </div>
+      <!-- end partner -->
+
+      <!-- partner -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="#" class="partner">
+          <img src="img/partners/photodune-light-background.png" alt="" class="partner__img">
+        </a>
+      </div>
+      <!-- end partner -->
+
+      <!-- partner -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="#" class="partner">
+          <img src="img/partners/activeden-light-background.png" alt="" class="partner__img">
+        </a>
+      </div>
+      <!-- end partner -->
+
+      <!-- partner -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="#" class="partner">
+          <img src="img/partners/3docean-light-background.png" alt="" class="partner__img">
+        </a>
+      </div>
+      <!-- end partner -->
+    </div>
+  </div>
+</section>
+<!-- end partners -->
+
+@endsection

@@ -1,0 +1,48 @@
+@layout('layouts/page-layout')
+
+@set('title', 'Only Piece | Cadastrar')
+
+@section('content')
+<div class="sign section--bg" data-bg="assets/img/section/section.jpg">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="sign__content">
+          <!-- registration form -->
+          <form action="{{ route('register') }}" method="POST" class="sign__form">
+            <a href="index.html" class="sign__logo">
+              <img src="img/logo.svg" alt="">
+            </a>
+
+            {{--  <div class="sign__group">
+              <input name="name" type="text" class="sign__input" placeholder="Nome">
+            </div>  --}}
+
+            <div class="sign__group">
+              <input name="email" type="text" class="sign__input" placeholder="Email">
+            </div>
+
+            <div class="sign__group">
+              <input name="password" type="password" class="sign__input" placeholder="Senha">
+            </div>
+
+            <div class="sign__group">
+              <input name="password_confirmation" type="password" class="sign__input" placeholder="Confime a senha">
+            </div>
+
+            <div class="sign__group sign__group--checkbox">
+              <input id="remember" name="remember" type="checkbox" checked="checked">
+              <label for="remember">I agree to the <a href="privacy.html">Privacy Policy</a></label>
+            </div>
+
+            <button class="sign__btn" type="submit">Entrar</button>
+
+            <span class="sign__text">Já tem uma Conta? <a href="/login">Entrar!</a></span>
+          </form>
+          <!-- registration form -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+@endsection

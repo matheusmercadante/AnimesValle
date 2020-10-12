@@ -1,0 +1,417 @@
+@layout('layouts/page-layout')
+
+@set('title', 'Only Piece | Catalogo de Filmes e Animes')
+
+@section('content')
+<!-- page title -->
+<section
+class="section section--first section--bg"
+data-bg="/assets/img/section/section.jpg"
+>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="section__wrap">
+        <!-- section title -->
+        <h2 class="section__title">Catalogo</h2>
+        <!-- end section title -->
+
+        <!-- breadcrumb -->
+        <ul class="breadcrumb">
+          <li class="breadcrumb__item"><a href="{{ route('home') }}">Home</a></li>
+          <li class="breadcrumb__item breadcrumb__item--active">
+            Catalogo
+          </li>
+        </ul>
+        <!-- end breadcrumb -->
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- end page title -->
+
+<!-- filter -->
+<div class="filter">
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <form class="filter__content">
+        <div class="filter__items">
+          <!-- filter item -->
+          <div class="filter__item" id="filter__genre">
+            <span class="filter__item-label">GÊNERO:</span>
+
+            <div
+              class="filter__item-btn dropdown-toggle"
+              role="navigation"
+              id="filter-genre"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <input type="button" value="Ação">
+              <input type="hidden" name="genres_filter" value="Ação">
+              <span></span>
+            </div>
+
+            <ul
+              class="filter__item-menu dropdown-menu scrollbar-dropdown"
+              aria-labelledby="filter-genre"
+            >
+              @each(item in genres)
+                <li>{{ item.name }}</li>
+              @endeach
+            </ul>
+          </div>
+          <!-- end filter item -->
+
+          <!-- filter item -->
+          <div class="filter__item" id="filter__quality">
+            <span class="filter__item-label">QUALIDADE:</span>
+
+            <div
+              class="filter__item-btn dropdown-toggle"
+              role="navigation"
+              id="filter-quality"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <input type="button" value="HD 720" />
+              <span></span>
+            </div>
+
+            <ul
+              class="filter__item-menu dropdown-menu scrollbar-dropdown"
+              aria-labelledby="filter-quality"
+            >
+              <li>HD 720</li>
+            </ul>
+          </div>
+          <!-- end filter item -->
+{{--
+          <!-- filter item -->
+          <div class="filter__item" id="filter__year">
+            <span class="filter__item-label">RELEASE YEAR:</span>
+
+            <div
+              class="filter__item-btn dropdown-toggle"
+              role="button"
+              id="filter-year"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <div class="filter__range">
+                <div id="filter__years-start"></div>
+                <div id="filter__years-end"></div>
+              </div>
+              <span></span>
+            </div>
+
+            <div
+              class="filter__item-menu filter__item-menu--range dropdown-menu"
+              aria-labelledby="filter-year"
+            >
+              <div id="filter__years"></div>
+            </div>
+          </div>
+          <!-- end filter item -->  --}}
+        </div>
+
+        <!-- filter btn -->
+        <button class="filter__btn" type="submit">Filtrar</button>
+        <!-- end filter btn -->
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+<!-- end filter -->
+
+<!-- catalog -->
+<div class="catalog">
+<div class="container">
+  <div class="row">
+    @if(filters)
+      @each(item in filters)
+      <!-- card -->
+        <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+          <div class="card">
+            <div class="card__cover">
+              <img src="https://storage.googleapis.com/onlypiece-thumbs/{{ item.main_image }}" alt="" />
+              <a href="{{ item.url }}" class="card__play">
+                <i class="icon ion-ios-play"></i>
+              </a>
+              <span class="card__rate card__rate--green">8.4</span>
+            </div>
+            <div class="card__content">
+              <h3 class="card__title">
+                <a href="{{ item.url }}">{{ item.name }}</a>
+              </h3>
+              <span class="card__category">
+                @each(genre in item.genres)
+                  <a href="#">{{ genre.name }}</a>
+                @endeach
+              </span>
+            </div>
+          </div>
+        </div>
+      <!-- end card -->
+      @endeach
+    @else
+      @each(item in catalog)
+      <!-- card -->
+        <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+          <div class="card">
+            <div class="card__cover">
+              <img src="https://storage.googleapis.com/onlypiece-thumbs/{{ item.main_image }}" alt="" />
+              <a href="{{ item.url }}" class="card__play">
+                <i class="icon ion-ios-play"></i>
+              </a>
+              <span class="card__rate card__rate--green">8.4</span>
+            </div>
+            <div class="card__content">
+              <h3 class="card__title">
+                <a href="{{ item.url }}">{{ item.name }}</a>
+              </h3>
+              <span class="card__category">
+                @each(genre in item.genres)
+                  <a href="#">{{ genre.name }}</a>
+                @endeach
+              </span>
+            </div>
+          </div>
+        </div>
+      <!-- end card -->
+      @endeach
+    @endif
+
+    <!-- paginator -->
+    <div class="col-12">
+      <ul class="paginator">
+          <li class="paginator__item paginator__item--prev">
+            @if(catalog.getMeta().previous_page_url === null)
+              <a href=""><i class="icon ion-ios-arrow-back"></i></a>
+            @else
+              <a href="{{ route('catalogo') }}{{ catalog.getMeta().previous_page_url }}"><i class="icon ion-ios-arrow-back"></i></a>
+            @endif
+          </li>
+          @each(anchor in catalog.getUrlsForRange(1, catalog.lastPage))
+            <li class="paginator__item paginator__item--active">
+              <a href="{{ route('catalogo') }}{{ anchor.url }}">
+                {{ anchor.page }}
+              </a>
+            </li>
+          @endeach
+          <li class="paginator__item paginator__item--next">
+            @if(catalog.getMeta().next_page_url === null)
+              <a href=""><i class="icon ion-ios-arrow-forward"></i></a>
+            @else
+            <a href="{{ route('catalogo') }}{{ catalog.getMeta().next_page_url }}"><i class="icon ion-ios-arrow-forward"></i></a>
+            @endif
+          </li>
+      </ul>
+    </div>
+    <!-- end paginator -->
+  </div>
+</div>
+</div>
+<!-- end catalog -->
+
+<!-- section -->
+<section class="section section--bg" data-bg="img/section/section.jpg">
+<div class="container">
+  <div class="row">
+    <!-- section title -->
+    <div class="col-12">
+      <div class="section__title-wrap">
+        <h2 class="section__title section__title--carousel">
+          Expected premiere
+        </h2>
+
+        <div class="section__nav-wrap">
+          <a href="#" class="section__view">View All</a>
+
+          <button
+            class="section__nav section__nav--prev"
+            type="button"
+            data-nav="#carousel1"
+          >
+            <i class="icon ion-ios-arrow-back"></i>
+          </button>
+
+          <button
+            class="section__nav section__nav--next"
+            type="button"
+            data-nav="#carousel1"
+          >
+            <i class="icon ion-ios-arrow-forward"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- end section title -->
+
+    <!-- carousel -->
+    <div class="col-12">
+      <div class="owl-carousel section__carousel" id="carousel1">
+        <!-- card -->
+        <div class="card">
+          <div class="card__cover">
+            <img src="/assets/img/covers/cover6.jpg" alt="" />
+            <a href="#" class="card__play">
+              <i class="icon ion-ios-play"></i>
+            </a>
+            <span class="card__rate card__rate--green">7.1</span>
+          </div>
+          <div class="card__content">
+            <h3 class="card__title"><a href="#">Benched</a></h3>
+            <span class="card__category">
+              <a href="#">Comedy</a>
+            </span>
+          </div>
+        </div>
+        <!-- end card -->
+
+        <!-- card -->
+        <div class="card">
+          <div class="card__cover">
+            <img src="/assets/img/covers/cover5.jpg" alt="" />
+            <a href="#" class="card__play">
+              <i class="icon ion-ios-play"></i>
+            </a>
+            <span class="card__rate card__rate--green">8.4</span>
+          </div>
+          <div class="card__content">
+            <h3 class="card__title">
+              <a href="#">I Dream in Another Language</a>
+            </h3>
+            <span class="card__category">
+              <a href="#">Action</a>
+              <a href="#">Triler</a>
+            </span>
+          </div>
+        </div>
+        <!-- end card -->
+
+        <!-- card -->
+        <div class="card">
+          <div class="card__cover">
+            <img src="/assets/img/covers/cover4.jpg" alt="" />
+            <a href="#" class="card__play">
+              <i class="icon ion-ios-play"></i>
+            </a>
+            <span class="card__rate card__rate--green">7.9</span>
+          </div>
+          <div class="card__content">
+            <h3 class="card__title"><a href="#">Blindspotting</a></h3>
+            <span class="card__category">
+              <a href="#">Comedy</a>
+              <a href="#">Drama</a>
+            </span>
+          </div>
+        </div>
+        <!-- end card -->
+
+        <!-- card -->
+        <div class="card">
+          <div class="card__cover">
+            <img src="/assets/img/covers/cover3.jpg" alt="" />
+            <a href="#" class="card__play">
+              <i class="icon ion-ios-play"></i>
+            </a>
+            <span class="card__rate card__rate--red">6.3</span>
+          </div>
+          <div class="card__content">
+            <h3 class="card__title"><a href="#">Whitney</a></h3>
+            <span class="card__category">
+              <a href="#">Romance</a>
+              <a href="#">Drama</a>
+              <a href="#">Music</a>
+            </span>
+          </div>
+        </div>
+        <!-- end card -->
+
+        <!-- card -->
+        <div class="card">
+          <div class="card__cover">
+            <img src="/assets/img/covers/cover2.jpg" alt="" />
+            <a href="#" class="card__play">
+              <i class="icon ion-ios-play"></i>
+            </a>
+            <span class="card__rate card__rate--green">7.1</span>
+          </div>
+          <div class="card__content">
+            <h3 class="card__title"><a href="#">Benched</a></h3>
+            <span class="card__category">
+              <a href="#">Comedy</a>
+            </span>
+          </div>
+        </div>
+        <!-- end card -->
+
+        <!-- card -->
+        <div class="card">
+          <div class="card__cover">
+            <img src="/assets/img/covers/cover.jpg" alt="" />
+            <a href="#" class="card__play">
+              <i class="icon ion-ios-play"></i>
+            </a>
+            <span class="card__rate card__rate--green">8.4</span>
+          </div>
+          <div class="card__content">
+            <h3 class="card__title">
+              <a href="#">I Dream in Another Language</a>
+            </h3>
+            <span class="card__category">
+              <a href="#">Action</a>
+              <a href="#">Triler</a>
+            </span>
+          </div>
+        </div>
+        <!-- end card -->
+      </div>
+    </div>
+    <!-- carousel -->
+  </div>
+</div>
+</section>
+<!-- end section -->
+
+<!-- section -->
+<section class="section">
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="section__title">
+        <b>Only Piece</b> – Best Place for Movies
+      </h2>
+      <p class="section__text">
+        It is a long established fact that a reader will be distracted by
+        the readable content of a page when looking at its layout. The
+        point of <b>using Lorem</b> Ipsum is that it has a more-or-less
+        normal distribution of letters, as opposed to using. Many desktop
+        publishing packages and web page editors now use Lorem Ipsum as
+        their default model text, and a search for 'lorem ipsum' will
+        uncover many web sites still in their infancy.
+      </p>
+
+      <p class="section__text">
+        Content here, content here, making it look like
+        <a href="#">readable</a> English. Many desktop publishing packages
+        and web page editors now use Lorem Ipsum as their default model
+        text, and a search for 'lorem ipsum' will uncover many web sites
+        still in their infancy. Various versions have evolved over the
+        years, sometimes by accident, sometimes on purpose (injected
+        humour and the like).
+      </p>
+    </div>
+  </div>
+</div>
+</section>
+<!-- end section -->
+
+@endsection
