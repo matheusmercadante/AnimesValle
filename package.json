@@ -1,6 +1,6 @@
 {
-  "name": "OnlyPiece",
-  "version": "0.0.0",
+  "name": "animes_valle",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "postinstall": "npm run build",
