@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://animesvalle.com.br/sitemap.xml
