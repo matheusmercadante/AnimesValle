@@ -6,11 +6,12 @@ import Catalog from "App/Models/Catalog";
 import Genre from "App/Models/Genre";
 
 export default class CatalogsController {
-  public async index({ view }: HttpContextContract) {
+  public async index({ view, auth }: HttpContextContract) {
     const limit = 10;
     const catalog = await Catalog.query().paginate(1, limit);
+    const user = await auth.authenticate();
 
-    return view.render("admin/catalog/index", { catalog });
+    return view.render("admin/catalog/index", { catalog, user });
   }
 
   public async create({ view }: HttpContextContract) {

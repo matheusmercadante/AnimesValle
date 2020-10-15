@@ -63,10 +63,12 @@ export default class SeasonsController {
     }
   }
 
-  public async show({ params, response, view, session }: HttpContextContract) {
+  public async show({ params, response, view, session, auth }: HttpContextContract) {
     const catalog = await Catalog.query().preload('seasons', (query) => {
       query.preload('episodes').where('catalog_id', params.id);
     }).where('id', params.id).first();
+
+    const user = await auth.authenticate();
 
     if (catalog != null) {
       // const seasons = await Season.query()
@@ -74,7 +76,7 @@ export default class SeasonsController {
       //   .preload("episodes")
       //   .paginate(1, limit);
 
-      return view.render("admin/season/index", { catalog });
+      return view.render("admin/season/index", { catalog, user });
     } else {
       session.flash("errors", "Esse anime não existe..");
       return response.redirect().toRoute("catalog.index");

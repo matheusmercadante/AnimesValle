@@ -9,6 +9,7 @@ import {
 } from "@ioc:Adonis/Lucid/Orm";
 import Genre from "./Genre";
 import Season from "./Season";
+import Review from "./Review";
 
 export default class Catalog extends BaseModel {
   @column({ isPrimary: true })
@@ -28,6 +29,12 @@ export default class Catalog extends BaseModel {
     foreignKey: "catalog_id",
   })
   public seasons: HasMany<typeof Season>;
+
+  @hasMany(() => Review, {
+    localKey: "id",
+    foreignKey: "catalog_id",
+  })
+  public reviews: HasMany<typeof Review>;
 
   @column()
   public name: string;

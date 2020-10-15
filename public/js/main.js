@@ -546,6 +546,7 @@ $(document).ready(function () {
 
       thirdSlider.noUiSlider.on("update", function (values, handle) {
         thirdValue.innerHTML = values[handle];
+        $('input#form__slider-input-value').val(values[handle]);
       });
     } else {
       return false;

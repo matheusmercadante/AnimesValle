@@ -4,11 +4,23 @@ import {
   column,
   beforeSave,
   BaseModel,
+  hasMany,
+  HasMany,
 } from '@ioc:Adonis/Lucid/Orm'
+import Review from './Review';
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
   public id: number
+
+  @hasMany(() => Review, {
+    localKey: "id",
+    foreignKey: "user_id",
+  })
+  public reviews: HasMany<typeof Review>;
+
+  @column()
+  public username: string
 
   @column()
   public email: string

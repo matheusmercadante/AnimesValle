@@ -35,15 +35,6 @@
                     <span>Autor:</span>
                     {{ catalog.author }}
                   </li>
-                  {{--  <li>
-                    <span>Cast:</span>
-                    <a href="#">Brian Cranston</a>
-                    <a href="#">Jesse Plemons</a>
-                    <a href="#">Matt Jones</a>
-                    <a href="#">Jonathan Banks</a>,
-                    <a href="#">Charles Baker</a>
-                    <a href="#">Tess Harper</a>
-                  </li>  --}}
                   <li>
                     <span>Gêneros:</span>
                     @each(genre in catalog.genres)
@@ -73,7 +64,7 @@
         <video controls crossorigin playsinline poster="https://storage.googleapis.com/onlypiece-thumbs/{{ catalog.main_image }}" id="player">
           <!-- Video files -->
           {{--  <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576">  --}}
-          <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4" type="video/mp4" size="720">
+          <source src="https://www.youtube.com/embed/ApLudqucq-s?controls=0" type="video/mp4" size="720">
 
           <!-- Caption files -->
           <track kind="captions" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
@@ -202,49 +193,51 @@
               <div class="col-12">
                 <div class="reviews">
                   <ul class="reviews__list">
-                    <li class="reviews__item">
-                      <div class="reviews__autor">
-                        <img class="reviews__avatar" src="img/user.svg" alt="">
-                        <span class="reviews__name">Best Marvel movie in my opinion</span>
-                        <span class="reviews__time">24.08.2018, 17:53 by John Doe</span>
+                    @if(catalog.reviews[0] !== undefined)
+                      @each(item in catalog.reviews)
+                        <li class="reviews__item">
+                          <div class="reviews__autor">
+                            <img class="reviews__avatar" src="assets/img/user.svg" alt="">
+                            <span class="reviews__name">{{ item.title }}</span>
+                            <span class="reviews__time">24.08.2018, 17:53 by {{ item.user.username }}</span>
 
-                        <span class="reviews__rating reviews__rating--green">8.4</span>
-                      </div>
-                      <p class="reviews__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
-                    </li>
+                            <span class="reviews__rating reviews__rating--{{ item.rating <= 6 ? 'red' : 'green' }}">{{ item.rating }}</span>
+                          </div>
+                          <p class="reviews__text">{{ item.description }}</p>
+                        </li>
+                      @endeach
+                    @else
 
-                    <li class="reviews__item">
-                      <div class="reviews__autor">
-                        <img class="reviews__avatar" src="img/user.svg" alt="">
-                        <span class="reviews__name">Best Marvel movie in my opinion</span>
-                        <span class="reviews__time">24.08.2018, 17:53 by John Doe</span>
-
-                        <span class="reviews__rating reviews__rating--green">9.0</span>
-                      </div>
-                      <p class="reviews__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
-                    </li>
-
-                    <li class="reviews__item">
-                      <div class="reviews__autor">
-                        <img class="reviews__avatar" src="img/user.svg" alt="">
-                        <span class="reviews__name">Best Marvel movie in my opinion</span>
-                        <span class="reviews__time">24.08.2018, 17:53 by John Doe</span>
-
-                        <span class="reviews__rating reviews__rating--red">5.5</span>
-                      </div>
-                      <p class="reviews__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
-                    </li>
+                    @endif
                   </ul>
 
-                  <form action="#" class="form">
-                    <input type="text" class="form__input" placeholder="Title">
-                    <textarea class="form__textarea" placeholder="Review"></textarea>
-                    <div class="form__slider">
-                      <div class="form__slider-rating" id="slider__rating"></div>
-                      <div class="form__slider-value" id="form__slider-value"></div>
+                  @if(user)
+                    <form action="{{ route('reviews.store', { catalog_id: catalog.id, user_id: user.id }) }}" method="POST" class="form">
+                      <input type="text" class="form__input" name="title" placeholder="Título">
+                      <textarea class="form__textarea" name="description" placeholder="Review"></textarea>
+                      <div class="form__slider">
+                        <div class="form__slider-rating" id="slider__rating"></div>
+                        <div class="form__slider-value" id="form__slider-value"></div>
+                        <input type="hidden" name="rating" id="form__slider-input-value" value="">
+                      </div>
+                      <button type="submit" class="form__btn">Enviar</button>
+                    </form>
+                  @elseif(userNot)
+                    <div class="w-100">
+                      <a href="{{ route('login') }}" style="color: #ffd80e">
+                        <span>Você já fez o review desse anime</span>
+                      </a>
+                      <span style="color: #fff">edite o seu review ou exclua para fazer um novo</span>
                     </div>
-                    <button type="button" class="form__btn">Send</button>
-                  </form>
+                  @else()
+                    <div class="w-100">
+                      <a href="{{ route('login') }}" style="color: #ffd80e">
+                        <i class="icon ion-ios-log-in"></i>
+                        <span>Entre</span>
+                      </a>
+                      <span style="color: #fff">para fazer um review desse anime :)</span>
+                    </div>
+                  @endif
                 </div>
               </div>
               <!-- end reviews -->

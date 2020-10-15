@@ -2,11 +2,12 @@ import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Genre from "App/Models/Genre";
 
 export default class GenresController {
-  public async index({ view }: HttpContextContract) {
+  public async index({ view, auth }: HttpContextContract) {
     const limit = 10;
     const genres = await Genre.query().paginate(1, limit);
+    const user = await auth.authenticate();
 
-    return view.render("admin/genre/index", { genres });
+    return view.render("admin/genre/index", { genres, user });
   }
 
   public async create({ view }: HttpContextContract) {

@@ -42,6 +42,7 @@ Route.get("/sobre", "PagesController.about").as("sobre");
 Route.get("/faq", "PagesController.faq").as("faq");
 
 Route.get("/:url?", "PagesController.details").as("details");
+
 Route.get("/assistir/:catalog_url/:season_url/:ep_url?", "PagesController.episode").as(
   "episode"
 );
@@ -55,10 +56,12 @@ Route.post("/upload-update/:name?/file", "UploadsController.uploadUpdate").as("u
 Route.post("/upload-video/:catalog_name?/file", "UploadsController.uploadVideo").as("uploadVideo");
 Route.post("/upload-video-update/:directory?/:name?/file", "UploadsController.uploadVideoUpdate").as("uploadVideoUpdate");
 
+Route.post('/reviews/:catalog_id?/:user_id?', 'Admin/ReviewsController.store').as('reviews.store');
+
 Route.group(() => {
   Route.resource("dashboard", "DashboardsController");
 
-  Route.resource("catalog", "CatalogsController");
+  Route.resource("catalog", "CatalogsController").except(['show']);
 
   Route.resource("season", "SeasonsController").except(["create", "edit"]);
   Route.get("/season/create/:id?", "SeasonsController.create").as(
@@ -79,9 +82,11 @@ Route.group(() => {
     "episode.store"
   );
 
-  Route.resource("genre", "GenresController");
+  Route.resource("genre", "GenresController").except(['show']);
 
   Route.resource("users", "UsersController");
+
+  Route.resource('reviews', 'ReviewController').except(['store', 'create']);
 })
   .prefix("/panel")
   .namespace("App/Controllers/Http/Admin")

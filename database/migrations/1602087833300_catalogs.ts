@@ -17,6 +17,8 @@ export default class Catalogs extends BaseSchema {
       table.string("type_image", 3).notNullable();
       table.string("published", 1).notNullable();
       table.string("qtd_seasons").notNullable();
+      table.float("rating", 10, 2).nullable();
+      table.string("trailer_link", 200).nullable();
 
       table.text("url", 'mediumText').notNullable();
       table.string("meta_title", 100).notNullable();

@@ -225,76 +225,22 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <div class="main__table-text">23</div>
-                </td>
-                <td>
-                  <div class="main__table-text">John Doe</div>
-                </td>
-                <td>
-                  <div class="main__table-text main__table-text--grey">email@email.com</div>
-                </td>
-                <td>
-                  <div class="main__table-text">Username</div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="main__table-text">23</div>
-                </td>
-                <td>
-                  <div class="main__table-text">John Doe</div>
-                </td>
-                <td>
-                  <div class="main__table-text main__table-text--grey">email@email.com</div>
-                </td>
-                <td>
-                  <div class="main__table-text">Username</div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="main__table-text">23</div>
-                </td>
-                <td>
-                  <div class="main__table-text">John Doe</div>
-                </td>
-                <td>
-                  <div class="main__table-text main__table-text--grey">email@email.com</div>
-                </td>
-                <td>
-                  <div class="main__table-text">Username</div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="main__table-text">23</div>
-                </td>
-                <td>
-                  <div class="main__table-text">John Doe</div>
-                </td>
-                <td>
-                  <div class="main__table-text main__table-text--grey">email@email.com</div>
-                </td>
-                <td>
-                  <div class="main__table-text">Username</div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="main__table-text">23</div>
-                </td>
-                <td>
-                  <div class="main__table-text">John Doe</div>
-                </td>
-                <td>
-                  <div class="main__table-text main__table-text--grey">email@email.com</div>
-                </td>
-                <td>
-                  <div class="main__table-text">Username</div>
-                </td>
-              </tr>
+              @each(item in users)
+                <tr>
+                  <td>
+                    <div class="main__table-text">{{ item.id }}</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text">John Doe</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text main__table-text--grey">{{ item.email }}</div>
+                  </td>
+                  <td>
+                    <div class="main__table-text">{{ item.username }}</div>
+                  </td>
+                </tr>
+              @endeach
             </tbody>
           </table>
         </div>

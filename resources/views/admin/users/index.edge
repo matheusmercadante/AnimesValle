@@ -1,0 +1,153 @@
+@layout('layouts/admin/admin-layout')
+
+@set('title', 'Animes Valle | Usuários')
+
+@section('content')
+<div class="container-fluid">
+  <div class="row">
+    <!-- main title -->
+    <div class="col-12">
+      <div class="main__title">
+        <h2>Usuários</h2>
+
+        <span class="main__title-stat">{{ users.getMeta().total }} Total</span>
+
+        <div class="main__title-wrap">
+          <!-- filter sort -->
+          <div class="filter" id="filter__sort">
+            <span class="filter__item-label">Sort by:</span>
+
+            <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-sort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <input type="button" value="Date created">
+              <span></span>
+            </div>
+
+            <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-sort">
+              <li>Date created</li>
+              <li>Pricing plan</li>
+              <li>Status</li>
+            </ul>
+          </div>
+          <!-- end filter sort -->
+
+          <!-- search -->
+          <form action="#" class="main__title-form">
+            <input type="text" placeholder="Find user..">
+            <button type="button">
+              <i class="icon ion-ios-search"></i>
+            </button>
+          </form>
+          <!-- end search -->
+        </div>
+      </div>
+    </div>
+    <!-- end main title -->
+
+    <!-- users -->
+    <div class="col-12">
+      <div class="main__table-wrap">
+        <table class="main__table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>BASIC INFO</th>
+              <th>USERNAME</th>
+              <th>PRICING PLAN</th>
+              <th>COMMENTS</th>
+              <th>REVIEWS</th>
+              <th>STATUS</th>
+              <th>CRAETED DATE</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @each(item in users)
+              <tr>
+                <td>
+                  <div class="main__table-text">{{ item.id }}</div>
+                </td>
+                <td>
+                  <div class="main__user">
+                    <div class="main__avatar">
+                      <img src="/admin/assets/img/user.svg" alt="">
+                    </div>
+                    <div class="main__meta">
+                      <h3>John Doe</h3>
+                      <span>{{ item.email }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="main__table-text">{{ item.username }}</div>
+                </td>
+                <td>
+                  <div class="main__table-text">Premium</div>
+                </td>
+                <td>
+                  <div class="main__table-text">13</div>
+                </td>
+                <td>
+                  <div class="main__table-text">1</div>
+                </td>
+                <td>
+                  <div class="main__table-text main__table-text--green">Approved</div>
+                </td>
+                <td>
+                  <div class="main__table-text">{{ item.created_at }}</div>
+                </td>
+                <td>
+                  <div class="main__table-btns">
+                    <a href="#modal-status" class="main__table-btn main__table-btn--banned open-modal">
+                      <i class="icon ion-ios-lock"></i>
+                    </a>
+                    <a href="edit-user.html" class="main__table-btn main__table-btn--edit">
+                      <i class="icon ion-ios-create"></i>
+                    </a>
+                    <a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
+                      <i class="icon ion-ios-trash"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            @endeach
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- end users -->
+
+    <!-- paginator -->
+    <div class="col-12">
+      <div class="paginator-wrap">
+        <span>10 from {{ users.getMeta().total }}</span>
+
+        <ul class="paginator">
+          <li class="paginator__item paginator__item--prev">
+            @if(users.getMeta().previous_page_url === null)
+              <a href=""><i class="icon ion-ios-arrow-back"></i></a>
+            @else
+              <a href="{{ route('users.index') }}{{ users.getMeta().previous_page_url }}"><i class="icon ion-ios-arrow-back"></i></a>
+            @endif
+          </li>
+          @each(anchor in users.getUrlsForRange(1, users.lastPage))
+            <li class="paginator__item paginator__item--active">
+              <a href="{{ route('users.index') }}{{ anchor.url }}">
+                {{ anchor.page }}
+              </a>
+            </li>
+          @endeach
+          <li class="paginator__item paginator__item--next">
+            @if(users.getMeta().next_page_url === null)
+              <a href=""><i class="icon ion-ios-arrow-forward"></i></a>
+            @else
+              <a href="{{ route('users.index') }}{{ users.getMeta().next_page_url }}"><i class="icon ion-ios-arrow-forward"></i></a>
+            @endif
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- end paginator -->
+  </div>
+</div>
+@endsection

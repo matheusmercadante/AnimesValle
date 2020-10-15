@@ -1,6 +1,7 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Catalog from "App/Models/Catalog";
 import Genre from "App/Models/Genre";
+import Review from "App/Models/Review";
 
 export default class PagesController {
   public async home({ view }: HttpContextContract) {
@@ -55,24 +56,53 @@ export default class PagesController {
     return view.render("pages/faq");
   }
 
-  public async details({ params, view }: HttpContextContract) {
+  public async details({ params, view, auth }: HttpContextContract) {
     const catalog = await Catalog.query()
       .preload("genres")
+      .preload('reviews', (query) => {
+        query.preload('user');
+      })
       .preload("seasons", (query) => {
         query.preload("episodes");
       })
       .where("url", params.url)
       .first();
 
+      if (auth.isLoggedIn === true) {
+        const user = await auth.authenticate();
 
-    const catalogsRecomendations = await Catalog.query().whereNot('name', `${catalog?.name}`)
-      .whereHas('genres', (query) => {
-        const genre = catalog?.genres[0].name;
+        const userVerif = await Review.findBy('user_id', user.id);
 
-        query.where('name', `${genre}`);
-      });
+        if (userVerif) {
+          const userNot = true;
+          const catalogsRecomendations = await Catalog.query().whereNot('name', `${catalog?.name}`)
+          .whereHas('genres', (query) => {
+            const genre = catalog?.genres[0].name;
 
-    return view.render("pages/details", { catalog, catalogsRecomendations });
+            query.where('name', `${genre}`);
+          });
+
+          return view.render("pages/details", { catalog, catalogsRecomendations, userNot });
+        } else {
+          const catalogsRecomendations = await Catalog.query().whereNot('name', `${catalog?.name}`)
+          .whereHas('genres', (query) => {
+            const genre = catalog?.genres[0].name;
+
+            query.where('name', `${genre}`);
+          });
+
+          return view.render("pages/details", { catalog, catalogsRecomendations, user });
+        }
+      } else {
+        const catalogsRecomendations = await Catalog.query().whereNot('name', `${catalog?.name}`)
+        .whereHas('genres', (query) => {
+          const genre = catalog?.genres[0].name;
+
+          query.where('name', `${genre}`);
+        });
+
+        return view.render("pages/details", { catalog, catalogsRecomendations });
+      }
   }
 
   public async episode({ params, response, view }: HttpContextContract) {

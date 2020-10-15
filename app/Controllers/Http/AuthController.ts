@@ -8,6 +8,9 @@ export default class AuthController {
      * Validate user details
      */
     const validationSchema = schema.create({
+      username: schema.string({ trim: true }, [
+        rules.unique({ table: "users", column: "username" })
+      ]),
       email: schema.string({ trim: true }, [
         rules.email(),
         rules.unique({ table: "users", column: "email" }),
@@ -23,13 +26,18 @@ export default class AuthController {
      * Create a new user
      */
     const user = new User();
+    user.username = userDetails.username;
     user.email = userDetails.email;
     user.password = userDetails.password;
     await user.save();
 
-    await auth.login(user);
-    session.flash("sucess", "Seja bem vindo(a) ao Anime Valle <3 :)");
-    response.redirect().toRoute("home");
+    if (user) {
+      await auth.login(user);
+      session.flash("sucess", "Seja bem vindo(a) ao Anime Valle <3 :)");
+      response.redirect().toRoute("home");
+    } else {
+      response.redirect('back');
+    }
   }
 
   public async login({ auth, request, response, session }: HttpContextContract) {
