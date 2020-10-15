@@ -1,8 +1,8 @@
 <!-- sidebar -->
 <div class="sidebar">
   <!-- sidebar logo -->
-  <a href="index.html" class="sidebar__logo">
-    <img src="/admin/assets/img/logo.svg" alt="">
+  <a href="{{ route('dashboard.index') }}" class="sidebar__logo">
+    <img src="/admin/logo.png" alt="">
   </a>
   <!-- end sidebar logo -->
 
@@ -17,22 +17,22 @@
       <p>Nome</p>
     </div>
 
-    <button class="sidebar__user-btn" type="button">
+    <a href="{{ route('logout') }}" class="sidebar__user-btn">
       <i class="icon ion-ios-log-out"></i>
-    </button>
+    </a>
   </div>
   <!-- end sidebar user -->
 
   <!-- sidebar nav -->
   <ul class="sidebar__nav">
     <li class="sidebar__nav-item">
-      <a href="{{ route('dashboard.index') }}" class="sidebar__nav-link sidebar__nav-link--active"><i class="icon ion-ios-keypad"></i> Dashboard</a>
+      <a href="{{ route('dashboard.index') }}" class="sidebar__nav-link sidebar__nav-link"><i class="icon ion-ios-keypad"></i> Dashboard</a>
     </li>
 
     <!-- dropdown -->
     <li class="dropdown sidebar__nav-item">
       <a class="dropdown-toggle sidebar__nav-link" href="#" role="button" id="dropdownMenuMore" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="icon ion-ios-copy"></i> Animes</a>
+        <i class="icon ion-ios-film"></i> Animes</a>
 
       <ul class="dropdown-menu sidebar__dropdown-menu scrollbar-dropdown" aria-labelledby="dropdownMenuMore">
         <li><a href="{{ route('catalog.index') }}">Catalogo</a></li>
@@ -50,10 +50,10 @@
     </li>
 
     <li class="sidebar__nav-item">
-      <a href="reviews.html" class="sidebar__nav-link"><i class="icon ion-ios-star-half"></i> Reviews</a>
+      <a href="{{ route('reviews.index') }}" class="sidebar__nav-link"><i class="icon ion-ios-star-half"></i> Reviews</a>
     </li>
 
-    <!-- dropdown -->
+    {{--  <!-- dropdown -->
     <li class="dropdown sidebar__nav-item">
       <a class="dropdown-toggle sidebar__nav-link" href="#" role="button" id="dropdownMenuMore" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon ion-ios-copy"></i> Pages</a>
 
@@ -66,12 +66,12 @@
         <li><a href="404.html">404 Page</a></li>
       </ul>
     </li>
-    <!-- end dropdown -->
+    <!-- end dropdown -->  --}}
   </ul>
   <!-- end sidebar nav -->
 
   <!-- sidebar copyright -->
-  <div class="sidebar__copyright">© 2020 OnlyPiece. <br>Create by <a href="https://www.instagram.com/_matheusmercadante/" target="_blank">Matheus Mercadante</a></div>
+  <div class="sidebar__copyright">© 2020 Animes Valle. <br>Create by <a href="https://www.instagram.com/_matheusmercadante/" target="_blank">Matheus Mercadante</a></div>
   <!-- end sidebar copyright -->
 </div>
 <!-- end sidebar -->

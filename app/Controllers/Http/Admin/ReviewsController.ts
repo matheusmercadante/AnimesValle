@@ -2,7 +2,13 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Review from 'App/Models/Review';
 
 export default class ReviewsController {
-  public async index (ctx: HttpContextContract) {
+  public async index ({ view }: HttpContextContract) {
+    const limit = 10;
+    const reviews = await Review.query().preload('user').preload('catalog').paginate(1, limit);
+
+    // return reviews;
+
+    return view.render("admin/review/index", { reviews });
   }
 
   public async create (ctx: HttpContextContract) {
@@ -41,6 +47,21 @@ export default class ReviewsController {
   public async update (ctx: HttpContextContract) {
   }
 
-  public async destroy (ctx: HttpContextContract) {
+  public async destroy ({ params, response, session }: HttpContextContract) {
+    try {
+      const review = await Review.findOrFail(params.id);
+
+      await review.delete();
+
+      if (review.delete()) {
+        session.flash("sucess", "Review deletado com Sucesso");
+        return response.redirect().toRoute("reviews.index");
+      } else {
+        session.flash("errors", "Aconteceu algum erro ao deletar o Review");
+        return response.redirect().toRoute("reviews.index");
+      }
+    } catch (error) {
+      return error;
+    }
   }
 }

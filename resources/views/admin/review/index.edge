@@ -1,0 +1,146 @@
+@layout('layouts/admin/admin-layout')
+
+@set('title', 'Animes Valle | Reviews')
+
+@section('content')
+<div class="container-fluid">
+  <div class="row">
+    <!-- main title -->
+    <div class="col-12">
+      <div class="main__title">
+        <h2>Reviews</h2>
+
+        <span class="main__title-stat">9,071 Total</span>
+
+        <div class="main__title-wrap">
+          <!-- filter sort -->
+          <div class="filter" id="filter__sort">
+            <span class="filter__item-label">Sort by:</span>
+
+            <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-sort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <input type="button" value="Date created">
+              <span></span>
+            </div>
+
+            <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-sort">
+              <li>Date created</li>
+              <li>Rating</li>
+            </ul>
+          </div>
+          <!-- end filter sort -->
+
+          <!-- search -->
+          <form action="#" class="main__title-form">
+            <input type="text" placeholder="Key word..">
+            <button type="button">
+              <i class="icon ion-ios-search"></i>
+            </button>
+          </form>
+          <!-- end search -->
+        </div>
+      </div>
+    </div>
+    <!-- end main title -->
+
+    <!-- reviews -->
+    <div class="col-12">
+      <div class="main__table-wrap">
+        <table class="main__table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>CATALOGO</th>
+              <th>AUTOR</th>
+              <th>TEXTO</th>
+              <th>RATING</th>
+              <th>CRAETED DATE</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @each(item in reviews)
+              <tr>
+                <td>
+                  <div class="main__table-text">{{ item.id }}</div>
+                </td>
+                <td>
+                  <div class="main__table-text">{{ item.catalog.name }}</div>
+                </td>
+                <td>
+                  <div class="main__table-text">{{ item.user.username }}</div>
+                </td>
+                <td>
+                  <div class="main__table-text">{{ item.description }}...</div>
+                </td>
+                <td>
+                  <div class="main__table-text main__table-text--rate"><i class="icon ion-ios-star"></i> {{ item.rating }}</div>
+                </td>
+                <td>
+                  <div class="main__table-text">24 Oct 2019</div>
+                </td>
+                <td>
+                  <div class="main__table-btns">
+                    <a href="#modal-view" class="main__table-btn main__table-btn--view open-modal">
+                      <i class="icon ion-ios-eye"></i>
+                    </a>
+                    <form id="formDelete" action="{{ route('reviews.destroy', { id: item.id }) }}?_method=DELETE" method="POST">
+                      <a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
+                        <i class="icon ion-ios-trash"></i>
+                      </a>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            @endeach
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- end reviews -->
+
+    <!-- paginator -->
+    <div class="col-12">
+      <div class="paginator-wrap">
+        <span>10 de {{ reviews.getMeta().total }}</span>
+
+        <ul class="paginator">
+          <li class="paginator__item paginator__item--prev">
+            @if(reviews.getMeta().previous_page_url === null)
+              <a href=""><i class="icon ion-ios-arrow-back"></i></a>
+            @else
+              <a href="{{ route('reviews.index') }}{{ reviews.getMeta().previous_page_url }}"><i class="icon ion-ios-arrow-back"></i></a>
+            @endif
+          </li>
+          @each(anchor in reviews.getUrlsForRange(1, reviews.lastPage))
+            <li class="paginator__item paginator__item--active">
+              <a href="{{ route('reviews.index') }}{{ anchor.url }}">
+                {{ anchor.page }}
+              </a>
+            </li>
+          @endeach
+          <li class="paginator__item paginator__item--next">
+            @if(reviews.getMeta().next_page_url === null)
+              <a href=""><i class="icon ion-ios-arrow-forward"></i></a>
+            @else
+              <a href="{{ route('reviews.index') }}{{ reviews.getMeta().next_page_url }}"><i class="icon ion-ios-arrow-forward"></i></a>
+            @endif
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- end paginator -->
+
+    @component('components/modals/modal_delete', { modal_title: 'Item delete'})
+        @slot('body')
+          Você tem certeza que quer deletar esse item?
+        @endslot
+
+        @slot('actions')
+          <button form="formDelete" class="modal__btn modal__btn--apply" type="submit">Deletar</button>
+          <button class="modal__btn modal__btn--dismiss" type="submit">Fechar</button>
+        @endslot
+      @endcomponent
+  </div>
+</div>
+@endsection

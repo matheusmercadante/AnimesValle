@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import User from './User';
+import Catalog from './Catalog';
 
 export default class Review extends BaseModel {
   @column({ isPrimary: true })
@@ -17,6 +18,12 @@ export default class Review extends BaseModel {
 
   @column()
   public catalog_id: string;
+
+  @belongsTo(() => Catalog, {
+    localKey: 'id',
+    foreignKey: 'catalog_id',
+  })
+  public catalog: BelongsTo<typeof Catalog>
 
   @column()
   public title: string;

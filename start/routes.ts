@@ -86,7 +86,7 @@ Route.group(() => {
 
   Route.resource("users", "UsersController");
 
-  Route.resource('reviews', 'ReviewController').except(['store', 'create']);
+  Route.resource('reviews', 'ReviewsController').except(['store', 'create']);
 })
   .prefix("/panel")
   .namespace("App/Controllers/Http/Admin")
