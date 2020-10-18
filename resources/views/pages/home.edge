@@ -54,7 +54,7 @@
                 <a href="{{ item.url }}" class="card__play">
                   <i class="icon ion-ios-play"></i>
                 </a>
-                <span class="card__rate card__rate--green">8.4</span>
+                <span class="card__rate card__rate--{{ item.rating <= 6 ? 'red' : 'green' }}">{{ item.rating }}</span>
               </div>
               <div class="card__content">
                 <h3 class="card__title">
@@ -215,7 +215,7 @@
                   <a href="{{ route('details', { url: item.url }) }}" class="card__play">
                     <i class="icon ion-ios-play"></i>
                   </a>
-                  <span class="card__rate card__rate--green">8.4</span>
+                  <span class="card__rate card__rate--{{ item.rating <= 6 ? 'red' : 'green' }}">{{ item.rating }}</span>
                 </div>
                 <div class="card__content">
                   <h3 class="card__title">

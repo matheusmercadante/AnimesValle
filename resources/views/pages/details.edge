@@ -22,7 +22,7 @@
             <div class="col-12 col-sm-5 col-lg-6 col-xl-5">
               <div class="card__cover">
                 <img src="https://storage.googleapis.com/onlypiece-thumbs/{{ catalog.main_image }}" alt="">
-                <span class="card__rate card__rate--green">8.4</span>
+                <span class="card__rate card__rate--{{ catalog.rating <= 6 ? 'red' : 'green' }}">{{ catalog.rating }}</span>
               </div>
             </div>
             <!-- end card cover -->
@@ -193,7 +193,7 @@
               <div class="col-12">
                 <div class="reviews">
                   <ul class="reviews__list">
-                    @if(catalog.reviews[0] !== undefined)
+                    @if(catalog.reviews !== undefined)
                       @each(item in catalog.reviews)
                         <li class="reviews__item">
                           <div class="reviews__autor">
@@ -201,7 +201,7 @@
                             <span class="reviews__name">{{ item.title }}</span>
                             <span class="reviews__time">24.08.2018, 17:53 by {{ item.user.username }}</span>
 
-                            <span class="reviews__rating reviews__rating--{{ item.rating <= 6 ? 'red' : 'green' }}">{{ item.rating }}</span>
+                            <span class="reviews__rating reviews__rating--{{ item.$extras.pivot_rating <= 6 ? 'red' : 'green' }}">{{ item.$extras.pivot_rating }}</span>
                           </div>
                           <p class="reviews__text">{{ item.description }}</p>
                         </li>

@@ -1,4 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Catalog from 'App/Models/Catalog';
 import Review from 'App/Models/Review';
 
 export default class ReviewsController {
@@ -17,14 +18,39 @@ export default class ReviewsController {
   public async store ({ request, response, params, session }: HttpContextContract) {
     try {
       const data = request.all();
+      const catalog = await Catalog.findOrFail(params.catalog_id);
 
       const save = await Review.create({
-        catalog_id: params.catalog_id,
+        // catalog_id: params.catalog_id,
         user_id: params.user_id,
         title: data.title,
         description: data.description,
-        rating: data.rating,
+        // rating: data.rating,
       });
+
+      await save.related('catalog').attach({
+        [catalog.id]: {
+          rating: data.rating
+        }
+      })
+
+      const catalogAtt = await Catalog.query().preload('reviews', (query) => {
+        query.pivotColumns(['rating'])
+      }).where('id', params.catalog_id).first();
+
+      const ratings =  catalogAtt?.reviews.map((rating) => {
+        return rating.$extras.pivot_rating;
+      });
+
+      const ratingSoma = ratings?.reduce((total, rating) => {
+        return total + rating;
+      }, 0)
+
+      const ratingMedia = ratingSoma / ratings?.length;
+
+      catalogAtt.rating = ratingMedia;
+
+      await catalogAtt.save();
 
       if (save) {
         session.flash("sucess", "Review enviado com Sucesso!");

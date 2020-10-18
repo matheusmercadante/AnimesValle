@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import User from './User';
 import Catalog from './Catalog';
 
@@ -8,7 +8,7 @@ export default class Review extends BaseModel {
   public id: number
 
   @column()
-  public user_id: string;
+  public user_id: number
 
   @belongsTo(() => User, {
     localKey: 'id',
@@ -16,23 +16,21 @@ export default class Review extends BaseModel {
   })
   public user: BelongsTo<typeof User>
 
-  @column()
-  public catalog_id: string;
-
-  @belongsTo(() => Catalog, {
-    localKey: 'id',
-    foreignKey: 'catalog_id',
+  @manyToMany(() => Catalog, {
+    pivotTable: "review_catalog",
+    localKey: "id",
+    pivotForeignKey: "review_id",
+    relatedKey: "id",
+    pivotRelatedForeignKey: "catalog_id",
+    pivotColumns: ['rating']
   })
-  public catalog: BelongsTo<typeof Catalog>
+  public catalog: ManyToMany<typeof Catalog>
 
   @column()
-  public title: string;
+  public title: string
 
   @column()
-  public description: string;
-
-  @column()
-  public rating: string;
+  public description: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

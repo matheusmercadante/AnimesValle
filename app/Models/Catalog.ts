@@ -30,11 +30,15 @@ export default class Catalog extends BaseModel {
   })
   public seasons: HasMany<typeof Season>;
 
-  @hasMany(() => Review, {
+  @manyToMany(() => Review, {
+    pivotTable: "review_catalog",
     localKey: "id",
-    foreignKey: "catalog_id",
+    pivotForeignKey: "catalog_id",
+    relatedKey: "id",
+    pivotRelatedForeignKey: "review_id",
+    pivotColumns: ['rating']
   })
-  public reviews: HasMany<typeof Review>;
+  public reviews: ManyToMany<typeof Review>
 
   @column()
   public name: string;
@@ -65,6 +69,9 @@ export default class Catalog extends BaseModel {
 
   @column()
   public qtd_seasons: string;
+
+  @column()
+  public rating: number;
 
   @column()
   public url: string;

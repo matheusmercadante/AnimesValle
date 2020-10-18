@@ -58,6 +58,8 @@ Route.post("/upload-video-update/:directory?/:name?/file", "UploadsController.up
 
 Route.post('/reviews/:catalog_id?/:user_id?', 'Admin/ReviewsController.store').as('reviews.store');
 
+Route.post('/messages', 'Admin/MessagesController.store').as('messages.store');
+
 Route.group(() => {
   Route.resource("dashboard", "DashboardsController");
 
@@ -87,6 +89,8 @@ Route.group(() => {
   Route.resource("users", "UsersController");
 
   Route.resource('reviews', 'ReviewsController').except(['store', 'create']);
+
+  Route.resource('messages', 'MessagesController').except(['store', 'create']);
 })
   .prefix("/panel")
   .namespace("App/Controllers/Http/Admin")

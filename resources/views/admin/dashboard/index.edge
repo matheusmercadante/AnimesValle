@@ -277,13 +277,13 @@
                     <div class="main__table-text">{{ item.id }}</div>
                   </td>
                   <td>
-                    <div class="main__table-text">{{ item.catalog.name }}</div>
+                    <div class="main__table-text">{{ item.catalog[0].name }}</div>
                   </td>
                   <td>
                     <div class="main__table-text">{{ item.user.username }}</div>
                   </td>
                   <td>
-                    <div class="main__table-text main__table-text--rate"><i class="icon ion-ios-star"></i> {{ item.rating }}</div>
+                    <div class="main__table-text main__table-text--rate"><i class="icon ion-ios-star"></i> {{ item.catalog[0].$extras.pivot_rating }}</div>
                   </td>
                 </tr>
               @endeach

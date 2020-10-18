@@ -60,7 +60,7 @@ export default class PagesController {
     const catalog = await Catalog.query()
       .preload("genres")
       .preload('reviews', (query) => {
-        query.preload('user');
+        query.preload('user').pivotColumns(['rating'])
       })
       .preload("seasons", (query) => {
         query.preload("episodes");
@@ -68,10 +68,17 @@ export default class PagesController {
       .where("url", params.url)
       .first();
 
+      // const teste =  catalog?.reviews.map((skill) => {
+      //   return skill.$extras.pivot_rating
+      // })
+
       if (auth.isLoggedIn === true) {
         const user = await auth.authenticate();
 
-        const userVerif = await Review.findBy('user_id', user.id);
+        // const userVerif = await Review.findBy('user_id', user.id);
+        const userVerif = await Review.query().where('user_id', user.id).andWhereHas('catalog', (query) => {
+          query.where('catalog_id', catalog.id);
+        }).first();
 
         if (userVerif) {
           const userNot = true;

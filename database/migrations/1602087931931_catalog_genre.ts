@@ -21,7 +21,7 @@ export default class CatalogGenres extends BaseSchema {
         .inTable("genres")
         .onDelete("CASCADE");
 
-      table.timestamps(true);
+      table.timestamps(false);
     });
   }
 

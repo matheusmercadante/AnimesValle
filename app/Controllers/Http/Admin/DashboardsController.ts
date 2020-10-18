@@ -10,7 +10,9 @@ export default class DashboardsController {
     const catalog = await Catalog.query().paginate(1, limit);
 
     const users = await User.query().orderBy('created_at', 'desc').paginate(1, limit);
-    const reviews = await Review.query().preload('catalog').preload('user').orderBy('created_at', 'desc').paginate(1, limit);
+    const reviews = await Review.query().preload('catalog', (query) => {
+      query.pivotColumns(['rating'])
+    }).preload('user').orderBy('created_at', 'desc').paginate(1, limit);
 
     return view.render("admin/dashboard/index", { catalog, users, reviews });
   }

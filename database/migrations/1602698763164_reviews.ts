@@ -10,12 +10,8 @@ export default class Reviews extends BaseSchema {
       table.integer('user_id').unsigned();
       table.foreign('user_id').references('id').inTable('users').onDelete('CASCADE');
 
-      table.integer('catalog_id').unsigned();
-      table.foreign('catalog_id').references('id').inTable('catalogs').onDelete('CASCADE');
-
       table.string('title', 100).notNullable();
       table.text('description', 'mediumText').notNullable();
-      table.float('rating', 10, 1).notNullable();
 
       table.timestamps(true)
     })
