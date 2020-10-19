@@ -2,6 +2,8 @@ import User from "App/Models/User";
 import { schema, rules } from "@ioc:Adonis/Core/Validator";
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 
+import Ws from 'App/Services/Ws';
+
 export default class AuthController {
   public async register({ request, auth, response, session }: HttpContextContract) {
     /**
@@ -33,6 +35,7 @@ export default class AuthController {
 
     if (user) {
       await auth.login(user);
+      Ws.io.emit('newUsers', 'Alguém acabou de se cadastrar');
       session.flash("sucess", "Seja bem vindo(a) ao Anime Valle <3 :)");
       response.redirect().toRoute("home");
     } else {

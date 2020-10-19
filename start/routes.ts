@@ -56,7 +56,7 @@ Route.post("/upload-update/:name?/file", "UploadsController.uploadUpdate").as("u
 Route.post("/upload-video/:catalog_name?/file", "UploadsController.uploadVideo").as("uploadVideo");
 Route.post("/upload-video-update/:directory?/:name?/file", "UploadsController.uploadVideoUpdate").as("uploadVideoUpdate");
 
-Route.post('/reviews/:catalog_id?/:user_id?', 'Admin/ReviewsController.store').as('reviews.store');
+Route.post('/reviews/:catalog_id/:user_id', 'Admin/ReviewsController.store').as('reviews.store');
 
 Route.post('/messages', 'Admin/MessagesController.store').as('messages.store');
 

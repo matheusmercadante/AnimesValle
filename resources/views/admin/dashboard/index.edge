@@ -19,8 +19,8 @@
     <!-- stats -->
     <div class="col-12 col-sm-6 col-xl-3">
       <div class="stats">
-        <span>Unique views this month</span>
-        <p>5 678</p>
+        <span>Pessoas online</span>
+        <p id="qtd_connectUsers">0</p>
         <i class="icon ion-ios-stats"></i>
       </div>
     </div>
@@ -49,8 +49,8 @@
     <!-- stats -->
     <div class="col-12 col-sm-6 col-xl-3">
       <div class="stats">
-        <span>New reviews</span>
-        <p>1 021</p>
+        <span>Novos reviews</span>
+        <p id="qtd_reviews" aria-valuenow="{{ reviews.total }}">{{ reviews.total }}</p>
         <i class="icon ion-ios-star-half"></i>
       </div>
     </div>

@@ -1,6 +1,9 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Catalog from 'App/Models/Catalog';
 import Review from 'App/Models/Review';
+import User from 'App/Models/User';
+
+import Ws from 'App/Services/Ws';
 
 export default class ReviewsController {
   public async index ({ view }: HttpContextContract) {
@@ -19,6 +22,7 @@ export default class ReviewsController {
     try {
       const data = request.all();
       const catalog = await Catalog.findOrFail(params.catalog_id);
+      const user = await User.findOrFail(params.user_id);
 
       const save = await Review.create({
         // catalog_id: params.catalog_id,
@@ -53,6 +57,11 @@ export default class ReviewsController {
       await catalogAtt.save();
 
       if (save) {
+        Ws.io.emit('reviews', {
+          user: user.username,
+          catalog: catalog.name,
+          delete: false
+        });
         session.flash("sucess", "Review enviado com Sucesso!");
         return response.redirect().back();
       } else {
@@ -80,6 +89,9 @@ export default class ReviewsController {
       await review.delete();
 
       if (review.delete()) {
+        Ws.io.emit('reviews', {
+          delete: true
+        });
         session.flash("sucess", "Review deletado com Sucesso");
         return response.redirect().toRoute("reviews.index");
       } else {

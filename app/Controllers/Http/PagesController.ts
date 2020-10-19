@@ -16,7 +16,12 @@ export default class PagesController {
       .orderBy("created_at", "desc")
       .paginate(1, limitCatalog);
 
-    return view.render("pages/home", { catalogDesq, catalogRec });
+    const catalogTop = await Catalog.query()
+      .preload('genres')
+      .orderBy("rating", "desc")
+      .paginate(1, limitDesq);
+
+    return view.render("pages/home", { catalogDesq, catalogRec, catalogTop });
   }
 
   public async catalog({ view }: HttpContextContract) {
@@ -27,7 +32,12 @@ export default class PagesController {
       .orderBy("name", "desc")
       .paginate(1, limitCatalog);
 
-    return view.render("pages/catalog", { catalog, genres });
+      const catalogTop = await Catalog.query()
+      .preload('genres')
+      .orderBy("rating", "desc")
+      .paginate(1, 10);
+
+    return view.render("pages/catalog", { catalog, genres, catalogTop });
   }
 
   public async search({ request, view }:HttpContextContract) {
